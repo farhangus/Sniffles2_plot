@@ -14,19 +14,17 @@ ranges = [(50, 100), (100,200),(200,300),(300,400),(400,600),(600,800),(800,1000
 x_labels = ['50-100', '100-200', '200-300','300-400','400-600','600-800','800-1k','1k-2.5k','2.5k-5k','>5k']
 
 def count_numbers_in_ranges(numbers, ranges):
-    counts = [0] * len(ranges)  # Initialize a count for each range
+    counts = [0] * len(ranges)  
     
     for number in numbers:
         for i, range_ in enumerate(ranges):
             if range_[0] <= number <= range_[1]:
-                counts[i] += 1  # Increment the count for the corresponding range
-                break  # Exit the inner loop once the number is found in a range
-    
+                counts[i] += 1  
+                break  
     return counts
 
 
 def genome_bar_chart(*arges):
-    # Count the occurrences of each value for each list
     data=arges[0][0]
     data1=arges[1][0]
     label_1=arges[0][1]
@@ -58,8 +56,6 @@ def genome_bar_chart(*arges):
     plt.savefig(arges[-1],dpi=800)
 
 def sv_size_type_chart(l1,l2,label_1,label_2,path_2_chart):
-    print(path_2_chart)
-   
     fig, ax = plt.subplots()
     x = np.arange(len(l1))
     # Width of each bar
@@ -130,12 +126,11 @@ def lenght_var_count_chart(output_name,del_flag,v_s_list,min_val,max_value,chart
 def vcf_number_variants(input_vcf_file):
     f=open(input_vcf_file)
     lines=f.readlines()
-    DEL=[];DEL_GENOTYPE=[]
-    INS=[];INS_GENOTYPE=[]
-    DUP=[];DUP_GENOTYPE=[]
-    INV=[];INV_GENOTYPE=[]
-    BND=[];BND_GENOTYPE=[]
-    DEL_NEGATIVE=[]
+    DEL, DEL_GENOTYPE = [], []
+    INS, INS_GENOTYPE = [], []
+    DUP, DUP_GENOTYPE = [], []
+    INV, INV_GENOTYPE = [], []
+    BND, BND_GENOTYPE = [], []
     for line in lines:
         if line[0] != "#":
             obj=VCFLineSV(line)

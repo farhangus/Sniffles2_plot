@@ -7,24 +7,33 @@ Created on Mon May 15 10:17:54 2023
 from arg_parser import argument_parser
 from functions_variables import *
 import os
-input_vcf_file,output_chrt=argument_parser()
-file_path = os.path.dirname(output_chrt)
+sv_ranges = {
+    "DEL": None,
+    "INS": None,
+    "DUP": None,
+    "INV": None,
+    "BND": None,
+}
+
+input_vcf_file,output_path=argument_parser()
+file_path = os.path.dirname(output_path)
+del_ins_type_size_chart=file_path+os.path.sep+"del_ins_type_size.jpg"
 lenght_variant_file=file_path+os.path.sep+"lenght_variant.jpg"
-genotype_chart=file_path+os.path.sep+"genotype.jpg"
-genotype_chart1=file_path+os.path.sep+"genotype_inv_dup.jpg"
-out_chart_2=file_path +os.path.sep+"sv_size_type_dup_inv.jpg"
+del_ins_genotype_chart=file_path+os.path.sep+"del_ins_genotype.jpg"
+genotype_chart1=file_path+os.path.sep+"inv_dup_genotype.jpg"
+out_chart_2=file_path +os.path.sep+"dup_inv_type_size.jpg"
 DEL,DEL_GENOTYPE,INS,INS_GENOTYPE,DUP,DUP_GENOTYPE,INV,INV_GENOTYPE,BND,BND_GENOTYPE=vcf_number_variants(input_vcf_file)
 genome_bar_chart((DUP_GENOTYPE,"DUP"),(INV_GENOTYPE,"INV"),genotype_chart1 )
-
 INS_DUP=INS+DUP
-Result_DEL = count_numbers_in_ranges(DEL, ranges)
-Result_INS = count_numbers_in_ranges(INS, ranges)
-Result_DUP = count_numbers_in_ranges(DUP, ranges)
-Result_INV = count_numbers_in_ranges(INV, ranges)
-Result_BND = count_numbers_in_ranges(BND, ranges)
-sv_size_type_chart(Result_DEL,Result_INS,"DEL","INS",output_chrt)
-sv_size_type_chart(Result_DUP,Result_INV,"DUP","INV",out_chart_2)
-genome_bar_chart((DEL_GENOTYPE,"DEL"),(INS_GENOTYPE,"INS"),genotype_chart )
+
+sv_ranges["DEL"] = count_numbers_in_ranges(DEL, ranges)
+sv_ranges["INS"] = count_numbers_in_ranges(INS, ranges)
+sv_ranges["DUP"] = count_numbers_in_ranges(DUP, ranges)
+sv_ranges["INV"] = count_numbers_in_ranges(INV, ranges)
+sv_ranges["BND"] = count_numbers_in_ranges(BND, ranges)
+sv_size_type_chart(sv_ranges["DEL"],sv_ranges["INS"],"DEL","INS",del_ins_type_size_chart)
+sv_size_type_chart(sv_ranges["DUP"],sv_ranges["INV"],"DUP","INV",out_chart_2)
+genome_bar_chart((DEL_GENOTYPE,"DEL"),(INS_GENOTYPE,"INS"),del_ins_genotype_chart )
 
 lenght_var_count_chart(lenght_variant_file,1,DEL, 50, 1000, 3, 0,[50,500],  0,"50<=DEl<=1K")
 lenght_var_count_chart(lenght_variant_file,1,DEL, 1000, 10000, 2, 0, [1000,5000],  0,"1k<=DEl<=10K")
