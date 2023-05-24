@@ -132,6 +132,39 @@ class VCFSampleGenotype(object):
     def set_mosaic(self, this_mosaic_status):
         self.is_mosaic = this_mosaic_status
 
+class VCFSampleGenotype(object):
+    def __init__(self):
+        self.gt = ""
+        self.dr = 0
+        self.dv = 0
+        self.af = 0
+        self.id = ""
+        self.name = ""
+        self.is_mosaic = False
+
+    def set_gt(self, this_gt):
+        self.gt = this_gt
+
+    def set_dr(self, this_dr):
+        self.dr = int(this_dr)
+
+    def set_dv(self, this_dv):
+        self.dv = int(this_dv)
+
+    def set_af(self, this_af):
+        self.af = float(this_af)
+
+    def set_id(self, this_id):
+        self.id = this_id
+
+    def set_name(self, this_name):
+        self.name = this_name
+
+    def set_mosaic(self, this_mosaic_status):
+        self.is_mosaic = this_mosaic_status
+
+
+# vcf line class for multi individual/population file
 class VCFLineSVPopulation(object):
     # init
     def __init__(self, input_line, sample_header_names=None):
@@ -202,7 +235,6 @@ class VCFLineSVPopulation(object):
                     elif info_key == "SUPPORT":
                         self.SUPPORT = int(info_val)
                     elif info_key == "COVERAGE":
-                        # must be checked again
                         self.COVERAGE = [int(x) if x is not None else 0 for x in info_val.split(",")]
                     elif info_key == "STRAND":
                         self.STRAND = info_val
@@ -258,3 +290,8 @@ class VCFLineSVPopulation(object):
             self.samples_obj.append(sample_gt)
 
 
+# vcf line class for single individuals SV
+class VCFLineSurvivor(object):
+    def __init__(self, input_line):
+        pass
+        

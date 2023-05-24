@@ -34,7 +34,6 @@ sv_ranges["BND"] = count_numbers_in_ranges(BND, ranges)
 sv_size_type_chart(sv_ranges["DEL"],sv_ranges["INS"],"DEL","INS",del_ins_type_size_chart)
 sv_size_type_chart(sv_ranges["DUP"],sv_ranges["INV"],"DUP","INV",out_chart_2)
 genome_bar_chart((DEL_GENOTYPE,"DEL"),(INS_GENOTYPE,"INS"),del_ins_genotype_chart )
-
 lenght_var_count_chart(lenght_variant_file,1,DEL, 50, 1000, 3, 0,[50,500],  0,"50<=DEl<=1K")
 lenght_var_count_chart(lenght_variant_file,1,DEL, 1000, 10000, 2, 0, [1000,5000],  0,"1k<=DEl<=10K")
 lenght_var_count_chart(lenght_variant_file,1,DEL, 10000, 50000000,1, 1, [10000,25000000,50000000],  0,"DEl>=10K")

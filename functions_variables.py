@@ -8,10 +8,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from vcf_line_parser import VCFLineSV
 from vcf_line_parser import VCFLineSVPopulation
-
-
 ranges = [(50, 100), (100,200),(200,300),(300,400),(400,600),(600,800),(800,1000),(1000,2500),(2500,5000),(5000,10000000)]
 x_labels = ['50-100', '100-200', '200-300','300-400','400-600','600-800','800-1k','1k-2.5k','2.5k-5k','>5k']
+
+def separate_lists(lst,num):
+    elements = [item[num] for item in lst]
+    return elements
+
 
 def count_numbers_in_ranges(numbers, ranges):
     counts = [0] * len(ranges)  
@@ -164,36 +167,41 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
             if line.startswith("#"):
                 continue
             obj = VCFLineSVPopulation(line)
-            print(obj.SVTYPE,obj.ID, obj.SUPP_VEC,obj.SUPP_VEC_BOOL_LIST)
-            print(obj.samples_DV,obj.samples_DR, obj.samples_AF)
-            tmp_sum = int(obj.samples_DV[0]) + int(obj.samples_DR[0])
-            if tmp_sum == 0:
-                tmp_sum = 0.01
-            
-            allele_frq = int(obj.samples_DV[0]) / tmp_sum
-
+            print(obj.ID)
             if obj.SVTYPE == "DEL":
-                DEL_LIST.append(allele_frq)
+                DEL_LIST.append(obj.samples_AF)
             elif obj.SVTYPE == "INS":
-                INS_LIST.append(allele_frq)
+                INS_LIST.append(obj.samples_AF)
             elif obj.SVTYPE == "INV":
-                INV_LIST.append(allele_frq)
+                INV_LIST.append(obj.samples_AF)
+    NUMBER_SAMPLES=len(DEL_LIST[0][:8])
+    AF_single_sample_flag = int(NUMBER_SAMPLES == 1)
 
-    # Define the bin size and number of bins
-    bin_size = 0.04
-    num_bins = int(1 / bin_size)
-
-    plt.hist([DEL_LIST, INS_LIST, INV_LIST], bins=num_bins, range=(0, 1), label=['DEL', 'INS', 'INV'],
-             alpha=0.7, edgecolor='black')
-
-    plt.yscale('log')
-    plt.xlabel('AF')
-    plt.ylabel('Count (log)')
-    plt.title('Site Frequency Spectrum')
-    plt.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1), prop={'size': 5})
-
-    plt.savefig(output_file_path, dpi=800)
-    plt.close()
-        
-
+    for i in range(NUMBER_SAMPLES):
+        tmp_list_name_del="del_AF_"+str(i)
+        tmp_list_name_del=[]
+        tmp_list_name_del=separate_lists(DEL_LIST,i)
+        tmp_list_name_ins="ins_AF_"+str(i)
+        tmp_list_name_ins=[]
+        tmp_list_name_ins=separate_lists(INS_LIST,i)
+        tmp_list_name_inv="inv_AF_"+str(i)
+        tmp_list_name_inv=[]
+        tmp_list_name_inv=separate_lists(INV_LIST,i)
+        bin_size = 0.04
+        num_bins = int(1 / bin_size)
+    
+        plt.hist([tmp_list_name_del, tmp_list_name_ins, tmp_list_name_inv], bins=num_bins, range=(0, 1), label=['DEL', 'INS', 'INV'],
+                  alpha=0.7, edgecolor='black')
+    
+        plt.yscale('log')
+        x_label = 'AF_sample_' + str(i+1) if not AF_single_sample_flag else 'AF'
+        plt.xlabel(x_label) 
+        plt.ylabel('Count (log)')
+        plt.title('Site Frequency Spectrum')
+        plt.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1), prop={'size': 5})
+    
+        plt.savefig(output_file_path+"AF_"+str(i), dpi=800)
+        plt.close()
+            
+    
 
