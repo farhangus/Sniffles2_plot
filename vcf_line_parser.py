@@ -4,6 +4,7 @@ Created on Wed May 17 10:37:37 2023
 
 @author: HGSC
 """
+import numpy as np
 class VCFHeader(object):
     # init
     def __init__(self, input_line=None):
@@ -201,8 +202,8 @@ class VCFLineSVPopulation(object):
                     elif info_key == "SUPPORT":
                         self.SUPPORT = int(info_val)
                     elif info_key == "COVERAGE":
-                        break
-                        self.COVERAGE = [int(x) for x in info_val.split(",")]
+                        # must be checked again
+                        self.COVERAGE = [int(x) if x is not None else 0 for x in info_val.split(",")]
                     elif info_key == "STRAND":
                         self.STRAND = info_val
                     elif info_key == "STDEV_LEN":
@@ -216,7 +217,7 @@ class VCFLineSVPopulation(object):
                     elif info_key == "SUPP_VEC":
                         self.SUPP_VEC = info_val
                         self.SUPP_VEC_BOOL_LIST = [supp == "1" for supp in list(info_val)]
-                        self.N_SUPP_VEC = len(self.SUPP_VEC_BOOL_LIST)
+                        self.N_SUPP_VEC = sum([int(supp) for supp in list(info_val)])
                     else:
                         pass
 
@@ -242,7 +243,10 @@ class VCFLineSVPopulation(object):
                 else:
                     pass
             #AF
-#            sample_gt.set_af(sample_gt.dv/(sample_gt.dv+sample_gt.dr))
+            if sample_gt.dv+sample_gt.dr > 0:
+                sample_gt.set_af(sample_gt.dv/(sample_gt.dv+sample_gt.dr))
+            else:
+                sample_gt.set_af(np.nan)
             self.samples_AF.append(sample_gt.af)
             # Mosaic
             sample_gt.set_mosaic(self.af_min_mosaic <= sample_gt.af <= self.af_max_mosaic)
@@ -252,4 +256,5 @@ class VCFLineSVPopulation(object):
                 sample_gt.set_name(_sample_names[self.SAMPLES.index(each_gt)])
             # Obj
             self.samples_obj.append(sample_gt)
+
 
