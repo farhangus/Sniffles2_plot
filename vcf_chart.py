@@ -9,10 +9,10 @@ from functions_variables import *
 import os
 input_vcf_file,output_chrt=argument_parser()
 file_path = os.path.dirname(output_chrt)
-lenght_variant_file=file_path+"\lenght_variant.jpg"
-genotype_chart=file_path+"\genotype.jpg"
-genotype_chart1=file_path+"\genotype_inv_dup.jpg"
-out_chart_2=file_path +"\sv_size_type_dup_inv.jpg"
+lenght_variant_file=file_path+os.path.sep+"lenght_variant.jpg"
+genotype_chart=file_path+os.path.sep+"genotype.jpg"
+genotype_chart1=file_path+os.path.sep+"genotype_inv_dup.jpg"
+out_chart_2=file_path +os.path.sep+"sv_size_type_dup_inv.jpg"
 DEL,DEL_GENOTYPE,INS,INS_GENOTYPE,DUP,DUP_GENOTYPE,INV,INV_GENOTYPE,BND,BND_GENOTYPE=vcf_number_variants(input_vcf_file)
 genome_bar_chart((DUP_GENOTYPE,"DUP"),(INV_GENOTYPE,"INV"),genotype_chart1 )
 
