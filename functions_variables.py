@@ -174,7 +174,8 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
                 INS_LIST.append(obj.samples_AF)
             elif obj.SVTYPE == "INV":
                 INV_LIST.append(obj.samples_AF)
-    NUMBER_SAMPLES=len(DEL_LIST[0][:8])
+                
+    NUMBER_SAMPLES=len(DEL_LIST[0][:100])
     AF_single_sample_flag = int(NUMBER_SAMPLES == 1)
 
     for i in range(NUMBER_SAMPLES):
@@ -200,7 +201,7 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
         plt.title('Site Frequency Spectrum')
         plt.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1), prop={'size': 5})
     
-        plt.savefig(output_file_path+"AF_"+str(i), dpi=800)
+        plt.savefig(output_file_path+"AF_sample_"+str(i+1), dpi=800)
         plt.close()
             
     
