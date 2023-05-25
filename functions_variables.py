@@ -6,6 +6,7 @@ Created on Wed May 17 10:40:52 2023
 """
 import matplotlib.pyplot as plt
 import numpy as np
+import subprocess
 from vcf_line_parser import VCFLineSV
 from vcf_line_parser import VCFLineSVPopulation
 ranges = [(50, 100), (100,200),(200,300),(300,400),(400,600),(600,800),(800,1000),(1000,2500),(2500,5000),(5000,10000000)]
@@ -204,4 +205,25 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
         plt.close()
             
     
+def samples_sv_numbers(input_file_path,output_file_path):
+    DEL_LIST = []
+    INS_LIST = []
+    INV_LIST = []
+    f_sv_samples=open(output_file_path+"tmp.txt","w")
+    with open(input_file_path, "r") as f:
+        lines = f.readlines()
 
+        for line in lines:
+            if line.startswith("#"):
+                continue
+            obj = VCFLineSVPopulation(line)
+            f_sv_samples.write(obj.SUPP_VEC+"\n") 
+            if obj.SVTYPE == "DEL":
+                DEL_LIST.append(obj.samples_AF)
+            elif obj.SVTYPE == "INS":
+                INS_LIST.append(obj.samples_AF)
+            elif obj.SVTYPE == "INV":
+                INV_LIST.append(obj.samples_AF)
+
+    cmd = f"sort {output_file_path}tmp.txt | uniq -c > {output_file_path}sv_sample_results.txt"
+    subprocess.run(cmd, shell=True)
