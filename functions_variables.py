@@ -167,7 +167,6 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
             if line.startswith("#"):
                 continue
             obj = VCFLineSVPopulation(line)
-            print(obj.ID)
             if obj.SVTYPE == "DEL":
                 DEL_LIST.append(obj.samples_AF)
             elif obj.SVTYPE == "INS":
