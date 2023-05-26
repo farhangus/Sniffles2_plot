@@ -234,3 +234,40 @@ def samples_sv_numbers(input_file_path,output_file_path):
     subprocess.run(cmd, shell=True)
     cmd= f"sed -i 's/^ *//' {output_file_path}sv_sample_results.txt"
     subprocess.run(cmd, shell=True)
+    data = []
+    data_set = []
+    f=open(f"{output_file_path}sv_sample_results.txt","r")
+    lines=f.readlines()
+    for line in lines:
+        elements = line.split()
+        tmp_line = elements[-1].rstrip("\n")
+        data_set.append(tmp_line)
+        data.append(int(elements[0]))
+    data_list=[]
+    for item in data_set:
+        tmp_list=[]
+        if int(item) !=0:
+            for i in range(len(item)):
+                print(item[i])
+                if item[i] != "0":
+                    tmp="sample_"+str(i+1)
+                    print(tmp)
+                    tmp_list.append(tmp)
+            data_list.append(tmp_list)
+
+        elif int(item) ==0:
+            data_list.append([])
+    print(data)
+    print(data_list)
+    from upsetplot import from_memberships
+    example = from_memberships(data_list,data=data)
+    print(example)
+    from upsetplot import plot
+    plot(example) 
+    from matplotlib import pyplot
+    pyplot.savefig(f"{output_file_path}sample_upset.png",dpi=800)  
+
+
+
+
+
