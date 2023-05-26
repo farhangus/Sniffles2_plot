@@ -160,7 +160,7 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
     DEL_LIST = []
     INS_LIST = []
     INV_LIST = []
-
+    DUP_LIST=[]
     with open(input_file_path, "r") as f:
         lines = f.readlines()
 
@@ -174,6 +174,8 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
                 INS_LIST.append(obj.samples_AF)
             elif obj.SVTYPE == "INV":
                 INV_LIST.append(obj.samples_AF)
+            elif obj.SVTYPE == "DUP":
+                DUP_LIST.append(obj.samples_AF)
                 
     NUMBER_SAMPLES=len(DEL_LIST[0][:100])
     AF_single_sample_flag = int(NUMBER_SAMPLES == 1)
@@ -188,10 +190,13 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
         tmp_list_name_inv="inv_AF_"+str(i)
         tmp_list_name_inv=[]
         tmp_list_name_inv=separate_lists(INV_LIST,i)
+        tmp_list_name_dup="dup_AF_"+str(i)
+        tmp_list_name_dup=[]
+        tmp_list_name_dup=separate_lists(DUP_LIST,i)
         bin_size = 0.04
         num_bins = int(1 / bin_size)
     
-        plt.hist([tmp_list_name_del, tmp_list_name_ins, tmp_list_name_inv], bins=num_bins, range=(0, 1), label=['DEL', 'INS', 'INV'],
+        plt.hist([tmp_list_name_del, tmp_list_name_ins, tmp_list_name_inv,tmp_list_name_dup], bins=num_bins, range=(0, 1), label=['DEL', 'INS', 'INV','DUP'],
                   alpha=0.7, edgecolor='black')
     
         plt.yscale('log')
@@ -226,4 +231,6 @@ def samples_sv_numbers(input_file_path,output_file_path):
                 INV_LIST.append(obj.samples_AF)
 
     cmd = f"sort {output_file_path}tmp.txt | uniq -c > {output_file_path}sv_sample_results.txt"
+    subprocess.run(cmd, shell=True)
+    cmd= f"sed -i 's/^ *//' {output_file_path}sv_sample_results.txt"
     subprocess.run(cmd, shell=True)
