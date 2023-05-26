@@ -9,6 +9,10 @@ import numpy as np
 import subprocess
 from vcf_line_parser import VCFLineSV
 from vcf_line_parser import VCFLineSVPopulation
+from upsetplot import plot
+from matplotlib import pyplot
+from upsetplot import from_memberships
+
 ranges = [(50, 100), (100,200),(200,300),(300,400),(400,600),(600,800),(800,1000),(1000,2500),(2500,5000),(5000,10000000)]
 x_labels = ['50-100', '100-200', '200-300','300-400','400-600','600-800','800-1k','1k-2.5k','2.5k-5k','>5k']
 
@@ -203,7 +207,7 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
         x_label = 'AF_sample_' + str(i+1) if not AF_single_sample_flag else 'AF'
         plt.xlabel(x_label) 
         plt.ylabel('Count (log)')
-        plt.title('Site Frequency Spectrum')
+        plt.title('Varriant Frequency Spectrum')
         plt.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1), prop={'size': 5})
     
         plt.savefig(output_file_path+"AF_sample_"+str(i+1), dpi=800)
@@ -248,24 +252,45 @@ def samples_sv_numbers(input_file_path,output_file_path):
         tmp_list=[]
         if int(item) !=0:
             for i in range(len(item)):
-                print(item[i])
                 if item[i] != "0":
                     tmp="sample_"+str(i+1)
-                    print(tmp)
                     tmp_list.append(tmp)
             data_list.append(tmp_list)
 
         elif int(item) ==0:
             data_list.append([])
-    print(data)
-    print(data_list)
-    from upsetplot import from_memberships
+
     example = from_memberships(data_list,data=data)
-    print(example)
-    from upsetplot import plot
-    plot(example) 
-    from matplotlib import pyplot
-    pyplot.savefig(f"{output_file_path}sample_upset.png",dpi=800)  
+
+
+
+    # upset=plot(example,  facecolor="red", other_dots_color=.4,shading_color=.3) 
+    # for patch in upset['intersections'].patches:
+    #     upset['intersections'].annotate(text=patch.get_height(), xy=(patch.get_x() + patch.get_width() /2, patch.get_height()), ha='center', va='bottom', rotation='vertical',fontsize=6,xytext=(0, +5), textcoords='offset points')
+    # for index, row in enumerate(upset['totals']):
+    #     upset['totals'].annotate(text=row.get_text(), xy=(index, 0), ha='center', va='bottom', fontsize=8)
+
+    # plt.title('Intercection of samples',size=10)
+
+    upset = plot(example, facecolor="red", other_dots_color=.4,shading_color=.3)
+    
+    # Rotate the counts vertically, adjust font size, and distance to the bar
+    for patch in upset['intersections'].patches:
+        upset['intersections'].annotate(text=patch.get_height(), xy=(patch.get_x() + patch.get_width() / 2, patch.get_height()), ha='center', va='bottom', rotation='vertical', fontsize=6, xytext=(0, +5), textcoords='offset points')
+    
+    # Show sum of the bottom chart in front of each row
+    for patch in upset['intersections'].patches:
+        print(patch)
+
+    # Set the counts format
+    
+    # Customize the appearance of the bars
+    upset['intersections'].bar_color = 'blue'
+    upset['intersections'].bar_alpha = 0.7
+
+
+    pyplot.savefig(f"{output_file_path}sample_upset.png",dpi=800, edgecolor="black")  
+
 
 
 
