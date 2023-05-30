@@ -1,0 +1,7 @@
+tmp*/
+temp*/
+Sample_VCF/
+__pycache__/
+hg002*
+*.vcf
+sniffles2_helper-main/
