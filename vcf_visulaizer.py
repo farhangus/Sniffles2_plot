@@ -16,7 +16,6 @@ sv_ranges = {
 }
 
 input_vcf_file,output_path=argument_parser()
-
 file_path = os.path.dirname(output_path)
 del_ins_type_size_chart=file_path+os.path.sep+"del_ins_type_size.jpg"
 lenght_variant_file=file_path+os.path.sep+"lenght_variant.jpg"
@@ -24,6 +23,7 @@ del_ins_genotype_chart=file_path+os.path.sep+"del_ins_genotype.jpg"
 genotype_chart1=file_path+os.path.sep+"inv_dup_genotype.jpg"
 out_chart_2=file_path +os.path.sep+"dup_inv_type_size.jpg"
 vcf_variables=vcf_number_variants(input_vcf_file)
+
 INS_DUP=vcf_variables.INS+vcf_variables.DUP
 sv_ranges["DEL"] = count_numbers_in_ranges(vcf_variables.DEL, ranges)
 sv_ranges["INS"] = count_numbers_in_ranges(vcf_variables.INS, ranges)
