@@ -9,11 +9,11 @@ import numpy as np
 import subprocess
 from vcf_line_parser import VCFLineSV
 from vcf_line_parser import VCFLineSVPopulation
-#from upsetplot import plot
+from upsetplot import plot
 from matplotlib import pyplot
-#from upsetplot import from_memberships
+from upsetplot import from_memberships
+from DataClasses import VcfVariables
 from dataclasses import dataclass
-
 
 ranges = [(50, 100), (100,200),(200,300),(300,400),(400,600),(600,800),(800,1000),(1000,2500),(2500,5000),(5000,10000000)]
 x_labels = ['50-100', '100-200', '200-300','300-400','400-600','600-800','800-1k','1k-2.5k','2.5k-5k','>5k']
@@ -42,7 +42,7 @@ class GenomeChartData():
             for lbl in labels
         ]
 def genome_bar_chart(output_file_path,labels,*bars:GenomeChartData):
-
+    print(output_file_path, labels, bars[0])
     x = np.arange(len(labels))
     # Define the width of each bar
     width = 0.2
@@ -125,21 +125,7 @@ def lenght_var_count_chart(output_name,del_flag,v_s_list,min_val,max_value,chart
 
     plt.savefig(output_name,dpi=1000)
 
-@dataclass
-class VcfVariables():
-    DEL:list
-    DEL_GENOTYPE :list
-    INS:list
-    INS_GENOTYPE :list
-    DUP:list
-    DUP_GENOTYPE :list
-    INV:list
-    INV_GENOTYPE :list
-    BND:list
-    BND_GENOTYPE :list
-    @classmethod
-    def new(cls):
-        return cls([],[],[],[],[],[],[],[],[],[])
+
 
 
 def vcf_number_variants(input_vcf_file):
@@ -153,18 +139,23 @@ def vcf_number_variants(input_vcf_file):
                 if obj.SVTYPE=="DEL":
                     vcf_variables.DEL.append(abs(obj.SVLEN))
                     vcf_variables.DEL_GENOTYPE.append(obj.GENOTYPE)
+                    vcf_variables.DEL_AF.append(obj.AF)
                 elif obj.SVTYPE=="INS":
                     vcf_variables.INS.append(obj.SVLEN)
                     vcf_variables.INS_GENOTYPE.append(obj.GENOTYPE)
+                    vcf_variables.INS_AF.append(obj.AF)
                 elif obj.SVTYPE=="INV":
                     vcf_variables.INV.append(obj.SVLEN)
                     vcf_variables.INV_GENOTYPE.append(obj.GENOTYPE)
+                    vcf_variables.INV_AF.append(obj.AF)
                 elif obj.SVTYPE=="DUP":
                     vcf_variables.DUP.append(obj.SVLEN)
                     vcf_variables.DUP_GENOTYPE.append(obj.GENOTYPE)
+                    vcf_variables.DEL_AF.append(obj.AF)
                 elif obj.SVTYPE=="BND":
                     vcf_variables.BND.append(obj.SVLEN)
                     vcf_variables.BND_GENOTYPE.append(obj.GENOTYPE)
+                    vcf_variables.BND_AF.append(obj.AF)
     return vcf_variables
 
 def allele_frequency_chart_genrator(input_file_path,output_file_path):
@@ -223,9 +214,9 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
 
 
 def samples_sv_numbers(input_file_path,output_file_path):
-    DEL_LIST = []
-    INS_LIST = []
-    INV_LIST = []
+    # DEL_LIST = []
+    # INS_LIST = []
+    # INV_LIST = []
     f_sv_samples=open(output_file_path+"tmp.txt","w")
     with open(input_file_path, "r") as f:
         lines = f.readlines()
@@ -235,12 +226,12 @@ def samples_sv_numbers(input_file_path,output_file_path):
                 continue
             obj = VCFLineSVPopulation(line)
             f_sv_samples.write(obj.SUPP_VEC+"\n")
-            if obj.SVTYPE == "DEL":
-                DEL_LIST.append(obj.samples_AF)
-            elif obj.SVTYPE == "INS":
-                INS_LIST.append(obj.samples_AF)
-            elif obj.SVTYPE == "INV":
-                INV_LIST.append(obj.samples_AF)
+            # if obj.SVTYPE == "DEL":
+            #     DEL_LIST.append(obj.samples_AF)
+            # elif obj.SVTYPE == "INS":
+            #     INS_LIST.append(obj.samples_AF)
+            # elif obj.SVTYPE == "INV":
+            #     INV_LIST.append(obj.samples_AF)
 
     cmd = f"sort {output_file_path}tmp.txt | uniq -c > {output_file_path}sv_sample_results.txt"
     subprocess.run(cmd, shell=True)
@@ -280,7 +271,7 @@ def samples_sv_numbers(input_file_path,output_file_path):
 
     # plt.title('Intercection of samples',size=10)
 
-    upset = plot(example, facecolor="red", other_dots_color=.4,shading_color=.3)
+    upset = plot(example, facecolor="black", other_dots_color=.4,shading_color=.1)
 
     # Rotate the counts vertically, adjust font size, and distance to the bar
     for patch in upset['intersections'].patches:
