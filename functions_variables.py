@@ -9,9 +9,11 @@ import numpy as np
 import subprocess
 from vcf_line_parser import VCFLineSV
 from vcf_line_parser import VCFLineSVPopulation
-from upsetplot import plot
+#from upsetplot import plot
 from matplotlib import pyplot
-from upsetplot import from_memberships
+#from upsetplot import from_memberships
+from dataclasses import dataclass
+
 
 ranges = [(50, 100), (100,200),(200,300),(300,400),(400,600),(600,800),(800,1000),(1000,2500),(2500,5000),(5000,10000000)]
 x_labels = ['50-100', '100-200', '200-300','300-400','400-600','600-800','800-1k','1k-2.5k','2.5k-5k','>5k']
@@ -22,46 +24,40 @@ def separate_lists(lst,num):
 
 
 def count_numbers_in_ranges(numbers, ranges):
-    counts = [0] * len(ranges)  
-    
+    counts = [0] * len(ranges)
     for number in numbers:
         for i, range_ in enumerate(ranges):
             if range_[0] <= number <= range_[1]:
-                counts[i] += 1  
-                break  
+                counts[i] += 1
+                break
     return counts
 
+@dataclass
+class GenomeChartData():
+    points: list
+    legend: str
+    def count(self,labels):
+        return [
+            self.points.count(lbl)
+            for lbl in labels
+        ]
+def genome_bar_chart(output_file_path,labels,*bars:GenomeChartData):
 
-def genome_bar_chart(*arges):
-    data=arges[0][0]
-    data1=arges[1][0]
-    label_1=arges[0][1]
-    label_2=arges[1][1]
-    counts_data0 = [data.count("0/0"), data.count("0/1"), data.count("1/1")]
-    counts_data1 = [data1.count("0/0"), data1.count("0/1"), data1.count("1/1")]
-
-    
-    # Define the x-axis labels and positions
-    labels = ["0/0", "0/1", "1/1"]
     x = np.arange(len(labels))
-
     # Define the width of each bar
     width = 0.2
-
     # Create the grouped bar plot
-    plt.bar(x - width, counts_data0, width=width, label=label_1)
-    plt.bar(x, counts_data1, width=width, label=label_2)
+    plt.bar(x - width, bars[0].count(labels), width=width, label=bars[0].legend)
+    plt.bar(x, bars[1].count(labels), width=width, label=bars[1].legend)
     # Add labels and title
     plt.xlabel("Genotype",size=6)
     plt.ylabel("Count",size=6)
     plt.title("Genotype_Frequency")
-
     # Set the x-axis tick labels
     plt.xticks(x, labels)
-
     # Add a legend
     plt.legend()
-    plt.savefig(arges[-1],dpi=800)
+    plt.savefig(output_file_path,dpi=800)
 
 def sv_size_type_chart(l1,l2,label_1,label_2,path_2_chart):
     fig, ax = plt.subplots()
@@ -90,7 +86,7 @@ def sv_size_type_chart(l1,l2,label_1,label_2,path_2_chart):
     plt.cla()
     plt.clf()
 
-    
+
 def lenght_var_count_chart(output_name,del_flag,v_s_list,min_val,max_value,chart_pos,ytick_flag,xtick_locs_list,plt_titl,subplt_title):
 
     plt.subplot(1,6, chart_pos)
@@ -108,9 +104,9 @@ def lenght_var_count_chart(output_name,del_flag,v_s_list,min_val,max_value,chart
     # Display the bin plot
 
     plt.bar(bins[:-1], bin_counts, width=bin_size, align='edge')
-    
+
     xtick_labels = [str(x) for x in xtick_locs_list]
-    
+
     plt.xticks(xtick_locs_list, xtick_labels,rotation=90)
     if chart_pos==1:
         plt.ylabel('Counts')
@@ -129,38 +125,50 @@ def lenght_var_count_chart(output_name,del_flag,v_s_list,min_val,max_value,chart
 
     plt.savefig(output_name,dpi=1000)
 
+@dataclass
+class VcfVariables():
+    DEL:list
+    DEL_GENOTYPE :list
+    INS:list
+    INS_GENOTYPE :list
+    DUP:list
+    DUP_GENOTYPE :list
+    INV:list
+    INV_GENOTYPE :list
+    BND:list
+    BND_GENOTYPE :list
+    @classmethod
+    def new(cls):
+        return cls([],[],[],[],[],[],[],[],[],[])
 
-    
+
 def vcf_number_variants(input_vcf_file):
-    f=open(input_vcf_file)
-    lines=f.readlines()
-    DEL, DEL_GENOTYPE = [], []
-    INS, INS_GENOTYPE = [], []
-    DUP, DUP_GENOTYPE = [], []
-    INV, INV_GENOTYPE = [], []
-    BND, BND_GENOTYPE = [], []
-    for line in lines:
-        if line[0] != "#":
-            obj=VCFLineSV(line)
-            if obj.SVTYPE=="DEL":
-                DEL.append(abs(obj.SVLEN))
-                DEL_GENOTYPE.append(obj.GENOTYPE)
-            elif obj.SVTYPE=="INS":
-                INS.append(obj.SVLEN)
-                INS_GENOTYPE.append(obj.GENOTYPE)
-            elif obj.SVTYPE=="INV":
-                INV.append(obj.SVLEN)
-                INV_GENOTYPE.append(obj.GENOTYPE)
-            elif obj.SVTYPE=="DUP":
-                DUP.append(obj.SVLEN)
-                DUP_GENOTYPE.append(obj.GENOTYPE)
-            elif obj.SVTYPE=="BND":
-                BND.append(obj.SVLEN)
-                BND_GENOTYPE.append(obj.GENOTYPE)
-    return DEL,DEL_GENOTYPE,INS,INS_GENOTYPE,DUP,DUP_GENOTYPE,INV,INV_GENOTYPE,BND,BND_GENOTYPE
+    with open(input_vcf_file,"r") as f:
+        lines=f.readlines()
+        vcf_variables=VcfVariables.new()
+
+        for line in lines:
+            if line[0] != "#":
+                obj=VCFLineSV(line)
+                if obj.SVTYPE=="DEL":
+                    vcf_variables.DEL.append(abs(obj.SVLEN))
+                    vcf_variables.DEL_GENOTYPE.append(obj.GENOTYPE)
+                elif obj.SVTYPE=="INS":
+                    vcf_variables.INS.append(obj.SVLEN)
+                    vcf_variables.INS_GENOTYPE.append(obj.GENOTYPE)
+                elif obj.SVTYPE=="INV":
+                    vcf_variables.INV.append(obj.SVLEN)
+                    vcf_variables.INV_GENOTYPE.append(obj.GENOTYPE)
+                elif obj.SVTYPE=="DUP":
+                    vcf_variables.DUP.append(obj.SVLEN)
+                    vcf_variables.DUP_GENOTYPE.append(obj.GENOTYPE)
+                elif obj.SVTYPE=="BND":
+                    vcf_variables.BND.append(obj.SVLEN)
+                    vcf_variables.BND_GENOTYPE.append(obj.GENOTYPE)
+    return vcf_variables
 
 def allele_frequency_chart_genrator(input_file_path,output_file_path):
-    
+
     DEL_LIST = []
     INS_LIST = []
     INV_LIST = []
@@ -180,7 +188,7 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
                 INV_LIST.append(obj.samples_AF)
             elif obj.SVTYPE == "DUP":
                 DUP_LIST.append(obj.samples_AF)
-                
+
     NUMBER_SAMPLES=len(DEL_LIST[0][:100])
     AF_single_sample_flag = int(NUMBER_SAMPLES == 1)
 
@@ -199,21 +207,21 @@ def allele_frequency_chart_genrator(input_file_path,output_file_path):
         tmp_list_name_dup=separate_lists(DUP_LIST,i)
         bin_size = 0.04
         num_bins = int(1 / bin_size)
-    
+
         plt.hist([tmp_list_name_del, tmp_list_name_ins, tmp_list_name_inv,tmp_list_name_dup], bins=num_bins, range=(0, 1), label=['DEL', 'INS', 'INV','DUP'],
                   alpha=0.7, edgecolor='black')
-    
+
         plt.yscale('log')
         x_label = 'AF_sample_' + str(i+1) if not AF_single_sample_flag else 'AF'
-        plt.xlabel(x_label) 
+        plt.xlabel(x_label)
         plt.ylabel('Count (log)')
         plt.title('Varriant Frequency Spectrum')
         plt.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1), prop={'size': 5})
-    
+
         plt.savefig(output_file_path+"AF_sample_"+str(i+1), dpi=800)
         plt.close()
-            
-    
+
+
 def samples_sv_numbers(input_file_path,output_file_path):
     DEL_LIST = []
     INS_LIST = []
@@ -226,7 +234,7 @@ def samples_sv_numbers(input_file_path,output_file_path):
             if line.startswith("#"):
                 continue
             obj = VCFLineSVPopulation(line)
-            f_sv_samples.write(obj.SUPP_VEC+"\n") 
+            f_sv_samples.write(obj.SUPP_VEC+"\n")
             if obj.SVTYPE == "DEL":
                 DEL_LIST.append(obj.samples_AF)
             elif obj.SVTYPE == "INS":
@@ -264,7 +272,7 @@ def samples_sv_numbers(input_file_path,output_file_path):
 
 
 
-    # upset=plot(example,  facecolor="red", other_dots_color=.4,shading_color=.3) 
+    # upset=plot(example,  facecolor="red", other_dots_color=.4,shading_color=.3)
     # for patch in upset['intersections'].patches:
     #     upset['intersections'].annotate(text=patch.get_height(), xy=(patch.get_x() + patch.get_width() /2, patch.get_height()), ha='center', va='bottom', rotation='vertical',fontsize=6,xytext=(0, +5), textcoords='offset points')
     # for index, row in enumerate(upset['totals']):
@@ -273,23 +281,23 @@ def samples_sv_numbers(input_file_path,output_file_path):
     # plt.title('Intercection of samples',size=10)
 
     upset = plot(example, facecolor="red", other_dots_color=.4,shading_color=.3)
-    
+
     # Rotate the counts vertically, adjust font size, and distance to the bar
     for patch in upset['intersections'].patches:
         upset['intersections'].annotate(text=patch.get_height(), xy=(patch.get_x() + patch.get_width() / 2, patch.get_height()), ha='center', va='bottom', rotation='vertical', fontsize=6, xytext=(0, +5), textcoords='offset points')
-    
+
     # Show sum of the bottom chart in front of each row
     for patch in upset['intersections'].patches:
         print(patch)
 
     # Set the counts format
-    
+
     # Customize the appearance of the bars
     upset['intersections'].bar_color = 'blue'
     upset['intersections'].bar_alpha = 0.7
 
 
-    pyplot.savefig(f"{output_file_path}sample_upset.png",dpi=800, edgecolor="black")  
+    pyplot.savefig(f"{output_file_path}sample_upset.png",dpi=800, edgecolor="black")
 
 
 
