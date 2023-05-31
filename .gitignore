@@ -5,3 +5,4 @@ __pycache__/
 hg002*
 *.vcf
 sniffles2_helper-main/
+hg*

@@ -42,7 +42,6 @@ class GenomeChartData():
             for lbl in labels
         ]
 def genome_bar_chart(output_file_path,labels,*bars:GenomeChartData):
-    print(output_file_path, labels, bars[0])
     x = np.arange(len(labels))
     # Define the width of each bar
     width = 0.2
