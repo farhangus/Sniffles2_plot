@@ -1,5 +1,13 @@
 from dataclasses import dataclass
-
+@dataclass
+class GenomeChartData():
+    points: list
+    legend: str
+    def count(self,labels):
+        return [
+            self.points.count(lbl)
+            for lbl in labels
+        ]
 @dataclass
 class VcfVariables():
     DEL:list

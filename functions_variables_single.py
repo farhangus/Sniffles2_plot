@@ -12,7 +12,7 @@ from vcf_line_parser import VCFLineSVPopulation
 from upsetplot import plot
 from matplotlib import pyplot
 from upsetplot import from_memberships
-from DataClasses import VcfVariables
+from DataClasses import *
 from dataclasses import dataclass
 
 ranges = [(50, 100), (100,200),(200,300),(300,400),(400,600),(600,800),(800,1000),(1000,2500),(2500,5000),(5000,10000000)]
@@ -32,15 +32,7 @@ def count_numbers_in_ranges(numbers, ranges):
                 break
     return counts
 
-@dataclass
-class GenomeChartData():
-    points: list
-    legend: str
-    def count(self,labels):
-        return [
-            self.points.count(lbl)
-            for lbl in labels
-        ]
+
 def genome_bar_chart(output_file_path,labels,*bars:GenomeChartData):
     x = np.arange(len(labels))
     # Define the width of each bar
@@ -135,6 +127,9 @@ def vcf_number_variants(input_vcf_file):
         for line in lines:
             if line[0] != "#":
                 obj=VCFLineSV(line)
+                # specify the type of a  file (single/multi)
+                # obj_supp_vec = VCFLineSVPopulation(line)
+                # print(obj_supp_vec.SUPP_VEC+"\n")
                 if obj.SVTYPE=="DEL":
                     vcf_variables.DEL.append(abs(obj.SVLEN))
                     vcf_variables.DEL_GENOTYPE.append(obj.GENOTYPE)

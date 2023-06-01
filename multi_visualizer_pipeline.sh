@@ -13,6 +13,6 @@ for file_path in "$directory_path"/*; do
             rm -f -r "$directory_path/$file_name"
             mkdir "$directory_path/$file_name"
             echo "Created directory: $directory_path/$file_name"
-            python3 multi_vcf_visualizer.py -i "$file_path" -o "$directory_path/$file_name/"
+            python3 multi_vcf_visualizer.py -i "$file_path" -o "$directory_path/$file_name/" >/dev/null
     fi
 done

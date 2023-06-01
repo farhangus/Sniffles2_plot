@@ -12,7 +12,7 @@ from vcf_line_parser import VCFLineSVPopulation
 from upsetplot import plot
 from matplotlib import pyplot
 from upsetplot import from_memberships
-from DataClasses import VcfVariables
+from DataClasses import *
 from dataclasses import dataclass
 from functions_variables_single import *
 
