@@ -74,6 +74,7 @@ class GenomeChartDataGenerator:
 
     
     def samples_sv_numbers(self):
+        sum_GT=0
         f_sv_samples=open(self.output_file_path+"tmp.txt","w")
         with open(self.input_file_path, "r") as f:
             lines = f.readlines()
@@ -82,7 +83,8 @@ class GenomeChartDataGenerator:
                 if line.startswith("#"):
                     continue
                 obj = VCFLineSVPopulation(line)
-                f_sv_samples.write(obj.SUPP_VEC+"\n")
+                if obj.FILTER=="PASS":
+                    f_sv_samples.write(obj.SUPP_VEC+"\n")
     
         cmd = f"sort {self.output_file_path}tmp.txt | uniq -c > {self.output_file_path}sv_sample_results.txt"
         subprocess.run(cmd, shell=True)
