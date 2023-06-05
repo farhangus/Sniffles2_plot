@@ -15,6 +15,7 @@ from upsetplot import from_memberships
 from DataClasses import *
 from dataclasses import dataclass
 from functions_variables_single import *
+import os
 
 class GenomeChartDataGenerator:
     def __init__(self, input_file_path, output_file_path):
