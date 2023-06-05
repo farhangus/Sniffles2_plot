@@ -13,9 +13,9 @@ def get_help():
     Usage: ./single_visualizer_pipeline.py [OPTIONS]
     Options:
       -h  Display this help message.
-      -i  Specify the path to the VCF files directory.
+      -i  Specify the path to the VCF files directory (accepts both single and multi samples VCF files).
     Example:
-      ./single_visualizer_pipeline.py -i <tmp_single_vcf/>
+      ./pipeline.py -i <vcfs/>
     '''
     print(help_message)
     sys.exit(1)
@@ -25,6 +25,8 @@ if len(sys.argv) == 1:
 
 input_file_path = None
 i = 1
+print(len(sys.argv))
+exit()
 while i < len(sys.argv):
     arg = sys.argv[i]
     if arg == '-h':
