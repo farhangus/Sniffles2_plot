@@ -17,8 +17,8 @@ sv_ranges = {
 }
 labels=["0/0","0/1","1/1"]
 
-def main():
-    input_vcf_file,output_path=argument_parser()
+def single_visulaizer(input_vcf_file,output_path):
+    #input_vcf_file,output_path=argument_parser()
     file_path = os.path.dirname(output_path)
     del_ins_type_size_chart=file_path+os.path.sep+"del_ins_type_size.jpg"
     lenght_variant_file=file_path+os.path.sep+"lenght_variant.jpg"

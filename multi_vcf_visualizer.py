@@ -8,14 +8,9 @@ import subprocess
 from arg_parser import argument_parser
 from functions_variables_multi import *
 
-def main():
-    input_vcf_file,output_chrt=argument_parser()
-    with open(input_vcf_file,"r") as f:
-        lines=f.readlines()
-        for line in lines:
-            if line[0] != "#":
-                print(len(line.split("\t")))
-                exit()
+def multi_visulaizer(input_vcf_file,output_chrt):
+    #input_vcf_file,output_chrt=argument_parser()
+
     Genome_chart_data_generator=GenomeChartDataGenerator(input_vcf_file,output_chrt)
     Genome_chart_data_generator.allele_frequency_chart_generator()
     Genome_chart_data_generator.samples_sv_numbers()
