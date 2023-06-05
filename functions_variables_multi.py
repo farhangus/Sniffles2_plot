@@ -76,17 +76,27 @@ class GenomeChartDataGenerator:
     
     def samples_sv_numbers(self):
         sum_GT=0
+        sample_names=[]
+        sample_names_dict={}
+
         f_sv_samples=open(self.output_file_path+"tmp.txt","w")
         with open(self.input_file_path, "r") as f:
             lines = f.readlines()
     
             for line in lines:
-                if line.startswith("#"):
+                if line.startswith("##"):
                     continue
-                obj = VCFLineSVPopulation(line)
-                if obj.FILTER=="PASS":
-                    f_sv_samples.write(obj.SUPP_VEC+"\n")
-    
+                elif line.startswith("#C"):
+                        sample_names=line.split('\t')[9:]
+                else:
+                    obj = VCFLineSVPopulation(line)
+                    if obj.FILTER=="PASS":
+                        f_sv_samples.write(obj.SUPP_VEC+"\n")
+        
+        for i in range(len(sample_names)):
+            if sample_names[i].endswith("\n"):
+                sample_names[i] = sample_names[i][:-1]
+            sample_names_dict["sample_"+str(i+1)]=sample_names[i]
         cmd = f"sort {self.output_file_path}tmp.txt | uniq -c > {self.output_file_path}sv_sample_results.txt"
         subprocess.run(cmd, shell=True)
         cmd= f"sed -i 's/^ *//' {self.output_file_path}sv_sample_results.txt"
@@ -107,7 +117,7 @@ class GenomeChartDataGenerator:
                 if int(item) !=0:
                     for i in range(len(item)):
                         if item[i] != "0":
-                            tmp="sample_"+str(i+1)
+                            tmp=sample_names_dict["sample_"+str(i+1)]
                             tmp_list.append(tmp)
                     data_list.append(tmp_list)
         
@@ -120,8 +130,8 @@ class GenomeChartDataGenerator:
         for patch in upset['intersections'].patches:
             upset['intersections'].annotate(text=patch.get_height(), xy=(patch.get_x() + patch.get_width() / 2, patch.get_height()), ha='center', va='bottom', rotation='vertical', fontsize=6, xytext=(0, +5), textcoords='offset points')
     
-        for patch in upset['intersections'].patches:
-            print(patch)
+        # for patch in upset['intersections'].patches:
+        #    print(patch)
         upset['intersections'].bar_color = 'blue'
         upset['intersections'].bar_alpha = 0.7
         pyplot.savefig(f"{self.output_file_path}sample_upset.png",dpi=800, edgecolor="white")
