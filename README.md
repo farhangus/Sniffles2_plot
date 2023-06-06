@@ -23,9 +23,9 @@ The following dependencies are required to use the Genome Chart Data Generator:
 - upsetplot
 
 ## usage
-For running the program for numbers of files in a sepcific directory:
+For running the program for numbers of vcf files in a sepcific directory:
      python3 sniffles2_plots.py -i <target directory>
      
-For running the program for single file:
+For running the program for single vcf file:
      python3 sniffles2_plots.py -i <file_name> -o <output_folder>
 

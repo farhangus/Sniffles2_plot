@@ -14,8 +14,7 @@ def multi_visulaizer(input_vcf_file,output_chrt):
     Genome_chart_data_generator=GenomeChartDataGenerator(input_vcf_file,output_chrt)
     Genome_chart_data_generator.allele_frequency_chart_generator()
     Genome_chart_data_generator.samples_sv_numbers()
-    cmd= f"rm -f  {output_chrt}*.txt"
-   # subprocess.run(cmd, shell=True)
+
 
 if __name__ == "__main__":
     main()
