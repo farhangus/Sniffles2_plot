@@ -17,7 +17,7 @@ def multi_vcf_flag(input_vcf_file):
                 if line.count('\t') > 9:
                     return 1
     return 0
-                
+
 def main():
     input_vcf_file,output_path=argument_parser()
     if (multi_vcf_flag(input_vcf_file)):

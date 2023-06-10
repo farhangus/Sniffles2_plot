@@ -32,23 +32,22 @@ class GenomeChartDataGenerator:
         self.input_file_path = input_file_path
         self.output_file_path = output_file_path
 
+
     def allele_frequency_chart_generator(self):
         sample_names=[]
         sample_names_dict={}
 
-        with open(self.output_file_path+"tmp.txt","w") as f_sv_samples:
-            with open(self.input_file_path, "r") as f:
-                lines = f.readlines()
+        with open(self.input_file_path, "r") as f:
+            lines = f.readlines()
 
-                for line in lines:
-                    if line.startswith("##"):
-                        continue
-                    elif line.startswith("#C"):
-                            sample_names=line.split('\t')[9:]
-                    else:
-                        obj = VCFLineSVPopulation(line)
-                        if obj.FILTER=="PASS":
-                            f_sv_samples.write(obj.SUPP_VEC+"\n")
+            for line in lines:
+                if line.startswith("##"):
+                    continue
+                elif line.startswith("#C"):
+                        sample_names=line.split('\t')[9:]
+                else:
+                    obj = VCFLineSVPopulation(line)
+
 
         for i in range(len(sample_names)):
             if sample_names[i].endswith("\n"):
@@ -101,7 +100,7 @@ class GenomeChartDataGenerator:
             plt.title('Variant Frequency Spectrum')
             plt.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1), prop={'size': 5})
 
-            plt.savefig(self.output_file_path + sample_names_dict["sample_" + str(i + 1)], dpi=800)
+            plt.savefig(os.path.join(self.output_file_path , sample_names_dict["sample_" + str(i + 1)]), dpi=800)
             plt.close()
 
 
@@ -111,19 +110,19 @@ class GenomeChartDataGenerator:
         sample_names=[]
         sample_names_dict={}
 
-        f_sv_samples=open(self.output_file_path+"tmp.txt","w")
-        with open(self.input_file_path, "r") as f:
-            lines = f.readlines()
+        with open(os.path.join(self.output_file_path,"tmp.txt"),"w") as f_sv_samples:
+            with open(self.input_file_path, "r") as f:
+                lines = f.readlines()
 
-            for line in lines:
-                if line.startswith("##"):
-                    continue
-                elif line.startswith("#C"):
-                        sample_names=line.split('\t')[9:]
-                else:
-                    obj = VCFLineSVPopulation(line)
-                    if obj.FILTER=="PASS":
-                        f_sv_samples.write(obj.SUPP_VEC+"\n")
+                for line in lines:
+                    if line.startswith("##"):
+                        continue
+                    elif line.startswith("#C"):
+                            sample_names=line.split('\t')[9:]
+                    else:
+                        obj = VCFLineSVPopulation(line)
+                        if obj.FILTER=="PASS":
+                            f_sv_samples.write(obj.SUPP_VEC+"\n")
 
         for i in range(len(sample_names)):
             if sample_names[i].endswith("\n"):
@@ -133,10 +132,10 @@ class GenomeChartDataGenerator:
         # subprocess.run(cmd, shell=True)
         # cmd= f"sed -i 's/^ *//' {self.output_file_path}sv_sample_results.txt"
         # subprocess.run(cmd, shell=True)
-        samples_SV_counter(self.output_file_path+"tmp.txt",self.output_file_path+"sv_sample_results.txt")
+        samples_SV_counter(os.path.join(self.output_file_path,"tmp.txt"),os.path.join(self.output_file_path,"sv_sample_results.txt"))
         data = []
         data_set = []
-        with open(f"{self.output_file_path}sv_sample_results.txt","r") as f:
+        with open(os.path.join(self.output_file_path,"sv_sample_results.txt"),"r") as f:
 
             lines=f.readlines()
             for line in lines:
@@ -167,9 +166,9 @@ class GenomeChartDataGenerator:
         #    print(patch)
         upset['intersections'].bar_color = 'blue'
         upset['intersections'].bar_alpha = 0.7
-        os.remove(self.output_file_path+"tmp.txt")
-        os.remove(self.output_file_path+"sv_sample_results.txt")
-        pyplot.savefig(f"{self.output_file_path}sample_upset.png",dpi=800, edgecolor="white")
+        os.remove(os.path.join(self.output_file_path,"tmp.txt"))
+        os.remove(os.path.join(self.output_file_path,"sv_sample_results.txt"))
+        pyplot.savefig(os.path.join(self.output_file_path,"sample_upset.png"),dpi=800, edgecolor="white")
 
 
 
