@@ -7,43 +7,15 @@ Created on Mon Jun  5 10:48:59 2023
 
 import sys
 import os
+import argparse
 
-def get_help():
-    help_message = '''
-    Usage: ./single_visualizer_pipeline.py [OPTIONS]
-    Options:
-      -h  Display this help message.
-      -i  Specify the path to the VCF files directory (accepts both single and multi samples VCF files).
-    Example:
-      ./pipeline.py -i <vcfs/>
-    '''
-    print(help_message)
-    sys.exit(1)
 
-if len(sys.argv) == 1:
-    get_help()
-
-input_file_path = None
-i = 1
-
-while i < len(sys.argv):
-    arg = sys.argv[i]
-    if arg == '-h':
-        get_help()
-    elif arg == '-i':
-        if i + 1 < len(sys.argv):
-            input_file_path = sys.argv[i + 1]
-            i += 1
-    elif arg == '-o':
-        if i + 1 < len(sys.argv):
-            output_file_path = sys.argv[i + 1]
-            i += 1
-        else:
-            get_help()
-    else:
-        get_help()
-    i += 1
 def main():
+    parser = argparse.ArgumentParser(description="sample1111")
+    parser.add_argument("-i", "--input", help="Specify the path to the VCF files directory (accepts both single and multi samples VCF files)",required=True)
+    parser.add_argument("-o", "--output", help="Specify the path to the VCF outp file")
+    args = parser.parse_args()
+    input_file_path,output_file_path=args.input,args.output
     if os.path.isfile(input_file_path):
             file_name = os.path.splitext(input_file_path)[0]
             print(file_name)
@@ -52,9 +24,10 @@ def main():
             print("Created directory:", directory)
             os.system(f"python3 vcf_visulaizer.py -i {input_file_path} -o {output_file_path}/")
     else:
-        for file_name in os.listdir(input_file_path):
+        for file_entry in os.scandir(input_file_path):
+            file_name=file_entry.name
             if file_name.lower().endswith(".vcf"):
-                file_path = os.path.join(input_file_path, file_name)
+                file_path = file_entry.path
                 if os.path.isfile(file_path):
                     file_name = os.path.splitext(file_name)[0]
                     directory_path = os.path.join(input_file_path, file_name)

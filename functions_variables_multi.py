@@ -22,7 +22,7 @@ def samples_SV_counter(input_file_name,output_results):
     with open(input_file_name,'r') as f:
         for text in f:
             c.update( [text.strip()] )
-    c_sorted = sorted(c.most_common())
+    c_sorted = c.most_common()
     with open(output_results,'w') as f:
         for key, val in c_sorted:
             f.write(str(val) + " " + str(key)+"\n")
@@ -39,7 +39,7 @@ class GenomeChartDataGenerator:
         with open(self.output_file_path+"tmp.txt","w") as f_sv_samples:
             with open(self.input_file_path, "r") as f:
                 lines = f.readlines()
-        
+
                 for line in lines:
                     if line.startswith("##"):
                         continue
@@ -49,7 +49,7 @@ class GenomeChartDataGenerator:
                         obj = VCFLineSVPopulation(line)
                         if obj.FILTER=="PASS":
                             f_sv_samples.write(obj.SUPP_VEC+"\n")
-            
+
         for i in range(len(sample_names)):
             if sample_names[i].endswith("\n"):
                 sample_names[i] = sample_names[i][:-1]
@@ -105,7 +105,7 @@ class GenomeChartDataGenerator:
             plt.close()
 
 
-    
+
     def samples_sv_numbers(self):
         sum_GT=0
         sample_names=[]
@@ -114,7 +114,7 @@ class GenomeChartDataGenerator:
         f_sv_samples=open(self.output_file_path+"tmp.txt","w")
         with open(self.input_file_path, "r") as f:
             lines = f.readlines()
-    
+
             for line in lines:
                 if line.startswith("##"):
                     continue
@@ -124,7 +124,7 @@ class GenomeChartDataGenerator:
                     obj = VCFLineSVPopulation(line)
                     if obj.FILTER=="PASS":
                         f_sv_samples.write(obj.SUPP_VEC+"\n")
-        
+
         for i in range(len(sample_names)):
             if sample_names[i].endswith("\n"):
                 sample_names[i] = sample_names[i][:-1]
@@ -137,7 +137,7 @@ class GenomeChartDataGenerator:
         data = []
         data_set = []
         with open(f"{self.output_file_path}sv_sample_results.txt","r") as f:
-                
+
             lines=f.readlines()
             for line in lines:
                 elements = line.split()
@@ -153,22 +153,24 @@ class GenomeChartDataGenerator:
                             tmp=sample_names_dict["sample_"+str(i+1)]
                             tmp_list.append(tmp)
                     data_list.append(tmp_list)
-        
+
                 elif int(item) ==0:
                     data_list.append([])
-        
+
         example = from_memberships(data_list,data=data)
         upset = plot(example, facecolor="black", other_dots_color=.4,shading_color=.1)
-    
+
         for patch in upset['intersections'].patches:
             upset['intersections'].annotate(text=patch.get_height(), xy=(patch.get_x() + patch.get_width() / 2, patch.get_height()), ha='center', va='bottom', rotation='vertical', fontsize=6, xytext=(0, +5), textcoords='offset points')
-    
+
         # for patch in upset['intersections'].patches:
         #    print(patch)
         upset['intersections'].bar_color = 'blue'
         upset['intersections'].bar_alpha = 0.7
+        os.remove(self.output_file_path+"tmp.txt")
+        os.remove(self.output_file_path+"sv_sample_results.txt")
         pyplot.savefig(f"{self.output_file_path}sample_upset.png",dpi=800, edgecolor="white")
-        
+
 
 
 
