@@ -45,9 +45,6 @@ class GenomeChartDataGenerator:
                     continue
                 elif line.startswith("#C"):
                         sample_names=line.split('\t')[9:]
-                else:
-                    obj = VCFLineSVPopulation(line)
-
 
         for i in range(len(sample_names)):
             if sample_names[i].endswith("\n"):
@@ -65,6 +62,8 @@ class GenomeChartDataGenerator:
                 if line.startswith("#"):
                     continue
                 obj = VCFLineSVPopulation(line)
+                if obj.ERROR:
+                    continue
                 sv_type = obj.SVTYPE
                 samples_AF = obj.samples_AF
 
@@ -121,6 +120,8 @@ class GenomeChartDataGenerator:
                             sample_names=line.split('\t')[9:]
                     else:
                         obj = VCFLineSVPopulation(line)
+                        if obj.ERROR:
+                            continue
                         if obj.FILTER=="PASS":
                             f_sv_samples.write(obj.SUPP_VEC+"\n")
 

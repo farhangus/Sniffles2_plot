@@ -127,6 +127,9 @@ def vcf_number_variants(input_vcf_file):
         for line in lines:
             if line[0] != "#":
                 obj=VCFLineSV(line)
+                if obj.ERROR:
+                    continue
+
                 # specify the type of a  file (single/multi)
                 # obj_supp_vec = VCFLineSVPopulation(line)
                 # print(obj_supp_vec.SUPP_VEC+"\n")
