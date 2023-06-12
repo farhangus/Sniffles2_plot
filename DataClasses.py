@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 @dataclass
 class GenomeChartData():
     points: list
@@ -28,3 +29,4 @@ class VcfVariables():
     @classmethod
     def new(cls):
         return cls([],[],[],[],[],[],[],[],[],[],[],[],[],[],[])
+    

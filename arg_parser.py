@@ -3,6 +3,7 @@
 import argparse
 
 def argument_parser():
+    """function to get the input and output file paths"""
     parser = argparse.ArgumentParser(
         description='A tool for visualizing VCF files.',
         prog='vcf_visualizer',
@@ -25,4 +26,3 @@ def argument_parser():
     output_directory = args.output_directory
 
     return input_file, output_directory
-
