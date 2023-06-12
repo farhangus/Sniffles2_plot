@@ -14,12 +14,6 @@ from functions_variables_single import *
 import os
 import collections
 
-# flake8
-# black
-# pyright
-# autopep8
-
-
 def samples_SV_counter(input_file_name, output_results):
     with open(input_file_name, 'r') as f:
         c = collections.Counter(text.strip() for text in f)
