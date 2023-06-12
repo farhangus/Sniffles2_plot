@@ -4,35 +4,38 @@ Created on Wed May 17 10:40:52 2023
 
 @author: HGSC
 """
-import matplotlib.pyplot as plt
-from vcf_line_parser import VCFLineSVPopulation
-from upsetplot import plot
-from matplotlib import pyplot
-from upsetplot import from_memberships
-from DataClasses import *
-from functions_variables_single import *
 import os
 import collections
+from upsetplot import plot
+from upsetplot import from_memberships
+import matplotlib.pyplot as plt
+from vcf_line_parser import VCFLineSVPopulation
+from DataClasses import *
+from functions_variables_single import *
+
 
 def samples_SV_counter(input_file_name, output_results):
-    with open(input_file_name, 'r') as f:
+    """counting the number of SVs"""
+    with open(input_file_name, 'r',encoding="utf-8") as f:
         c = collections.Counter(text.strip() for text in f)
-    with open(output_results, 'w') as f:
+    with open(output_results, 'w',encoding="utf-8") as f:
         f.write("\n".join(
             f"{val} {key}" for key, val in c.most_common()))
 
-
 class GenomeChartDataGenerator:
+    """generate plots for multi VCF files"""
     def __init__(self, input_file_path, output_directory):
         self.input_file_path = input_file_path
         self.output_directory = output_directory
 
     def output_file(self, filename):
+        """returnthe output file name and filepath"""
         return os.path.join(self.output_directory,filename)
 
     def allele_frequency_chart_generator(self):
+        """generate the allele frequency plots"""
         sample_names = []
-        with open(self.input_file_path, "r") as f:
+        with open(self.input_file_path, "r",encoding="utf-8") as f:
             for line in f:
                 if line.startswith("#C"):
                     sample_names = [l.strip() for l in line.split('\t')[9:]]
@@ -45,7 +48,7 @@ class GenomeChartDataGenerator:
         INV_LIST = []
         DUP_LIST = []
 
-        with open(self.input_file_path, "r") as f:
+        with open(self.input_file_path, "r",encoding="utf-8") as f:
             for line in f:
                 if line.startswith("#"):
                     continue
@@ -89,13 +92,14 @@ class GenomeChartDataGenerator:
             plt.close()
 
     def samples_sv_numbers(self):
+        """generate the upset plots for SVs per each sample"""
         sample_names=[]
-        with open(self.output_file("tmp.txt"), "w") as f_sv_samples:
-            with open(self.input_file_path, "r") as f:
+        with open(self.output_file("tmp.txt"), "w",encoding="utf-8") as f_sv_samples:
+            with open(self.input_file_path, "r",encoding="utf-8") as f:
                 for line in f:
                     if line.startswith("##"):
                         continue
-                    elif line.startswith("#C"):
+                    if line.startswith("#C"):
                         sample_names = [l.strip() for l in line.split('\t')[9:]]
                     else:
                         obj = VCFLineSVPopulation(line)
@@ -111,7 +115,7 @@ class GenomeChartDataGenerator:
             self.output_file("sv_sample_results.txt"))
         data = []
         data_set = []
-        with open(self.output_file("sv_sample_results.txt"), "r") as f:
+        with open(self.output_file("sv_sample_results.txt"), "r",encoding="utf-8") as f:
             for line in f:
                 elements = line.split()
                 tmp_line = elements[-1].strip("\n")

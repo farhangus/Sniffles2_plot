@@ -4,10 +4,9 @@ Created on Mon May 15 10:17:54 2023
 
 @author: HGSC - Farhang Jaryani
 """
-from arg_parser import argument_parser
-from functions_variables_multi import *
-from functions_variables_single import *
 import os
+from functions_variables_multi import GenomeChartDataGenerator
+from functions_variables_single import *
 
 sv_ranges = {
     "DEL": None,
@@ -20,8 +19,7 @@ labels = ["0/0", "0/1", "1/1"]
 
 
 def single_visulaizer(input_vcf_file, output_path):
-    # input_vcf_file,output_path=argument_parser()
-
+    """generate the plots for single vcf files"""
     del_ins_type_size_chart = os.path.join(output_path, "del_ins_type_size.jpg")
     lenght_variant_file = os.path.join(output_path, "lenght_variant.jpg")
     genome_chart_del_ins = os.path.join(output_path, "del_ins_genotype.jpg")
@@ -131,7 +129,3 @@ def single_visulaizer(input_vcf_file, output_path):
         0,
         "INS/DUP>=10K\nbin_size=500K",
     )
-
-
-if __name__ == "__main__":
-    main()

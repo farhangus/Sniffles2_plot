@@ -6,14 +6,8 @@ Created on Wed May 17 10:40:52 2023
 """
 import matplotlib.pyplot as plt
 import numpy as np
-import subprocess
 from vcf_line_parser import VCFLineSV
-from vcf_line_parser import VCFLineSVPopulation
-from upsetplot import plot
-from matplotlib import pyplot
-from upsetplot import from_memberships
 from DataClasses import *
-from dataclasses import dataclass
 
 ranges = [
     (50, 100),
@@ -57,6 +51,7 @@ def count_numbers_in_ranges(numbers, ranges):
 
 
 def genome_bar_chart(output_file_path, labels, *bars: GenomeChartData):
+    """genaret geome bar charts for (ins,del) and (dup,inv)"""
     x = np.arange(len(labels))
     # Define the width of each bar
     width = 0.2
@@ -75,6 +70,7 @@ def genome_bar_chart(output_file_path, labels, *bars: GenomeChartData):
 
 
 def sv_size_type_chart(l1, l2, label_1, label_2, path_2_chart):
+    """generate the SV size charts for each two variants(del,ins) and (inv,dup)"""
     fig, ax = plt.subplots()
     x = np.arange(len(l1))
     bar_width = 0.40
@@ -106,6 +102,7 @@ def lenght_var_count_chart(
     plt_titl,
     subplt_title,
 ):
+    """generate the comparision chart including 6 different charts for lenght variant"""
     plt.subplot(1, 6, chart_pos)
     plt.subplots_adjust(wspace=0.05, hspace=0.05, bottom=0.3)
 
@@ -139,6 +136,7 @@ def lenght_var_count_chart(
 
 
 def vcf_number_variants(input_vcf_file):
+    """return the number of each variant seprately"""
     with open(input_vcf_file, "r") as f:
         lines = f.readlines()
         vcf_variables = VcfVariables.new()
