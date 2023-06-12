@@ -10,14 +10,14 @@ import os
 import argparse
 
 def main():
-    parser = argparse.ArgumentParser(description="sample1111")
+    parser = argparse.ArgumentParser(description="Snfiffle2 plot generator")
     parser.add_argument(
         "-i",
         "--input",
         help="Specify the path to the VCF files directory (accepts both single and multi samples VCF files)",
         required=True,
     )
-    parser.add_argument("-o", "--output", help="Specify the path to the VCF outp file")
+    parser.add_argument("-o", "--output", help="Specify the path to the VCF output file")
     args = parser.parse_args()
     input_file_path, output_file_path = args.input, args.output
     if os.path.isfile(input_file_path):

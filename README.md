@@ -24,7 +24,7 @@ The following dependencies are required to use the Genome Chart Data Generator:
 
 ## usage
 For running the program for numbers of vcf files in a sepcific directory:
-     python3 sniffles2_plots.py -i <target directory>
+     python3 sniffles2_plots.py -i <target_VCF_files_folder>
      
 For running the program for single vcf file:
      python3 sniffles2_plots.py -i <file_name> -o <output_folder>
