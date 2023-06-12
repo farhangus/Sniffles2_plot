@@ -151,4 +151,4 @@ class GenomeChartDataGenerator:
         upset['intersections'].bar_alpha = 0.7
         os.remove(self.output_file("tmp.txt"))
         os.remove(self.output_file("sv_sample_results.txt"))
-        pyplot.savefig(self.output_file("sample_upset.png"), dpi=800, edgecolor="white")
+        plt.savefig(self.output_file("sample_upset.png"), dpi=800, edgecolor="white")
