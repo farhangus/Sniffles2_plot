@@ -121,6 +121,7 @@ class GenomeChartDataGenerator:
                 tmp_line = elements[-1].strip("\n")
                 data_set.append(tmp_line)
                 data.append(int(elements[0]))
+            
         data_list = []
         for item in data_set:
             if item != "0":
@@ -132,7 +133,7 @@ class GenomeChartDataGenerator:
                 data_list.append(tmp_list)
             else:
                 data_list.append([])
-
+        
         example = from_memberships(data_list, data=data)
         upset = plot(example, facecolor="black", other_dots_color=.4, shading_color=.1)
 
