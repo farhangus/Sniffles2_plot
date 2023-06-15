@@ -67,7 +67,7 @@ class GenomeChartDataGenerator:
                 elif sv_type == "DUP":
                     DUP_LIST.append(samples_AF)
 
-        NUMBER_SAMPLES = len(DEL_LIST[0][:100])
+        NUMBER_SAMPLES = len(DEL_LIST[0][:1000])
 
         bin_size = 0.04
         num_bins = int(1 / bin_size)

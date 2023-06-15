@@ -65,7 +65,6 @@ class VCFLineSV(object):
             self.TRA = "" if self.SVTYPE != "BND" else ALT
             self.END = self.END if self.SVTYPE != "BND" else self.POS + 1
             self.SVLEN = int(self.SVLEN) if self.SVTYPE != "BND" else self.SVLEN
-
     def get_parsed_info(self, info_string):
         # INFO field extraction
         extract_info = ["SVTYPE", "SVLEN", "END", "SUPPORT", "COVERAGE", "STRAND", "STDEV_LEN", 
@@ -234,8 +233,8 @@ class VCFLineSVPopulation(object):
                         self.END = int(info_val)
                     elif info_key == "SUPPORT":
                         self.SUPPORT = int(info_val)
-                    elif info_key == "COVERAGE":
-                        self.COVERAGE = [int(x) if x is not None else 0 for x in info_val.split(",")]
+                    # elif info_key == "COVERAGE":
+                        # self.COVERAGE = [int(x) if x is not None else 0 for x in info_val.split(",")]
                     elif info_key == "STRAND":
                         self.STRAND = info_val
                     elif info_key == "STDEV_LEN":
