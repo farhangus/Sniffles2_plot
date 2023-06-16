@@ -6,6 +6,8 @@ Created on Wed May 17 10:40:52 2023
 """
 import os
 import collections
+import seaborn as sns
+import pandas as pd
 from upsetplot import plot
 from upsetplot import from_memberships
 import matplotlib.pyplot as plt
@@ -184,5 +186,44 @@ class GenomeChartDataGenerator:
                         elif obj.FILTER=="PASS" and obj.SVTYPE=="INS":
                             samples_ins.append(obj.SUPP_VEC)
         print(sample_names)
-        print(count_frequency(samples_del))
-        print(count_frequency(samples_ins))
+        print("")
+        tmp_dict=count_frequency(samples_del)
+        print(tmp_dict)
+        lenght=len(sample_names)
+        string1=lenght*"0"
+        tmp_matrix=[]
+        tmp_matrix_1=[]
+        for i in range(lenght):
+            for j in range(lenght):
+                tmp_string=list(string1)
+                tmp_string[i]="1"
+                tmp_string[j]="1"
+                tmp_matrix_1.append("".join(tmp_string))
+                tmp_sum=0
+                for key,value in tmp_dict.items():
+                    if key[i]=="1" and key[j]=="1":
+                        tmp_sum+=value
+                tmp_matrix.append(tmp_sum)
+        two_dim_matrix_1 = np.reshape(tmp_matrix_1, (lenght,lenght))
+        print(f"\n\n{two_dim_matrix_1}")
+        two_dim_matrix = np.reshape(tmp_matrix, (lenght,lenght))
+        print(f"\n\n{two_dim_matrix}")
+
+        
+        data = np.array(two_dim_matrix)
+        # mask = np.triu(np.ones_like(data))
+        df = pd.DataFrame(two_dim_matrix, columns=sample_names)
+        corr_matrix=df.corr()
+        sns.heatmap(corr_matrix, cmap='PuOr')
+
+
+        # # Create a heatmap
+        # sns.heatmap(data, annot=True, fmt="d", cmap="YlGnBu")
+    
+        # # Set x and y axis labels
+        # plt.xlabel("X-axis")
+        # plt.ylabel("Y-axis")
+        # plt.yticks(np.arange(9), range(9))
+
+        # # Display the heatmap
+        plt.savefig("hetamap.jpg",dpi=800)
