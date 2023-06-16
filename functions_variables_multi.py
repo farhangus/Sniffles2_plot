@@ -13,6 +13,14 @@ from vcf_line_parser import VCFLineSVPopulation
 from DataClasses import *
 from functions_variables_single import *
 
+def count_frequency(elements):
+    frequency_dict = {}
+    for element in elements:
+        if element in frequency_dict:
+            frequency_dict[element] += 1
+        else:
+            frequency_dict[element] = 1
+    return frequency_dict
 
 def samples_SV_counter(input_file_name, output_results):
     """counting the number of SVs"""
@@ -150,6 +158,31 @@ class GenomeChartDataGenerator:
 
         upset['intersections'].bar_color = 'blue'
         upset['intersections'].bar_alpha = 0.7
-        os.remove(self.output_file("tmp.txt"))
-        os.remove(self.output_file("sv_sample_results.txt"))
+#        os.remove(self.output_file("tmp.txt"))
+#        os.remove(self.output_file("sv_sample_results.txt"))
         plt.savefig(self.output_file("sample_upset.png"), dpi=800, edgecolor="white")
+
+    def heat_map_generator(self):
+        print("heat ap generator")
+        sample_names=[]
+        samples_del=[]
+        samples_ins=[]
+        with open(self.output_file("tmp.txt"), "w",encoding="utf-8") as f_sv_samples:
+            with open(self.input_file_path, "r",encoding="utf-8") as f:
+                for line in f:
+                    if line.startswith("##"):
+                        continue
+                    if line.startswith("#C"):
+                        sample_names = [l.strip() for l in line.split('\t')[9:]]
+                    else:
+                        obj = VCFLineSVPopulation(line)
+                        if obj.ERROR:
+                            continue
+                        if obj.FILTER=="PASS" and obj.SVTYPE=="DEL":
+                            f_sv_samples.write(f"{obj.SUPP_VEC}\n")
+                            samples_del.append(obj.SUPP_VEC)
+                        elif obj.FILTER=="PASS" and obj.SVTYPE=="INS":
+                            samples_ins.append(obj.SUPP_VEC)
+        print(sample_names)
+        print(count_frequency(samples_del))
+        print(count_frequency(samples_ins))
