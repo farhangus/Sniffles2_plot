@@ -15,6 +15,25 @@ from vcf_line_parser import VCFLineSVPopulation
 from DataClasses import *
 from functions_variables_single import *
 
+def sample_to_matrix(sample_names,samples):
+
+    tmp_dict=count_frequency(samples)
+    lenght=len(sample_names)
+    string1=lenght*"0"
+    tmp_matrix=[]
+    for i in range(lenght):
+        for j in range(lenght):
+            tmp_string=list(string1)
+            tmp_string[i]="1"
+            tmp_string[j]="1"
+            tmp_sum=0
+            for key,value in tmp_dict.items():
+                if key[i]=="1" and key[j]=="1":
+                    tmp_sum+=value
+            tmp_matrix.append(tmp_sum)
+    two_dim_matrix = np.reshape(tmp_matrix, (lenght,lenght))
+    return two_dim_matrix
+
 def count_frequency(elements):
     frequency_dict = {}
     for element in elements:
@@ -131,7 +150,7 @@ class GenomeChartDataGenerator:
                 tmp_line = elements[-1].strip("\n")
                 data_set.append(tmp_line)
                 data.append(int(elements[0]))
-            
+
         data_list = []
         for item in data_set:
             if item != "0":
@@ -143,7 +162,7 @@ class GenomeChartDataGenerator:
                 data_list.append(tmp_list)
             else:
                 data_list.append([])
-        
+
         example = from_memberships(data_list, data=data)
         upset = plot(example, facecolor="black", other_dots_color=.4, shading_color=.1)
 
@@ -185,44 +204,30 @@ class GenomeChartDataGenerator:
                             samples_del.append(obj.SUPP_VEC)
                         elif obj.FILTER=="PASS" and obj.SVTYPE=="INS":
                             samples_ins.append(obj.SUPP_VEC)
-        print(sample_names)
-        print("")
-        tmp_dict=count_frequency(samples_del)
-        print(tmp_dict)
-        lenght=len(sample_names)
-        string1=lenght*"0"
-        tmp_matrix=[]
-        tmp_matrix_1=[]
-        for i in range(lenght):
-            for j in range(lenght):
-                tmp_string=list(string1)
-                tmp_string[i]="1"
-                tmp_string[j]="1"
-                tmp_matrix_1.append("".join(tmp_string))
-                tmp_sum=0
-                for key,value in tmp_dict.items():
-                    if key[i]=="1" and key[j]=="1":
-                        tmp_sum+=value
-                tmp_matrix.append(tmp_sum)
-        two_dim_matrix_1 = np.reshape(tmp_matrix_1, (lenght,lenght))
-        print(f"\n\n{two_dim_matrix_1}")
-        two_dim_matrix = np.reshape(tmp_matrix, (lenght,lenght))
-        print(f"\n\n{two_dim_matrix}")
 
-        
-        data = np.array(two_dim_matrix)
-        # mask = np.triu(np.ones_like(data))
-        df = pd.DataFrame(two_dim_matrix, columns=sample_names)
-        corr_matrix=df.corr()
-        sns.heatmap(corr_matrix, cmap='PuOr')
+        del_matrix=sample_to_matrix(sample_names,samples_del)
+        ins_matrix=sample_to_matrix(sample_names,samples_ins)
+
+        print(del_matrix)
+        print(ins_matrix)
+        combined_matrix=np.tril(del_matrix) + np.tril(ins_matrix, -1).transpose()
+        print(combined_matrix)
+        data = np.array(combined_matrix)
+        # # mask = np.triu(np.ones_like(data))
+        # df = pd.DataFrame(combined_matrix, columns=sample_names)
+        df_cm = pd.DataFrame(combined_matrix, index = sample_names,
+                  columns = sample_names)
+        plt.figure(figsize=(10,10))
+
+        sns.heatmap(df_cm, cmap='PuOr')
 
 
         # # Create a heatmap
         # sns.heatmap(data, annot=True, fmt="d", cmap="YlGnBu")
-    
+
         # # Set x and y axis labels
-        # plt.xlabel("X-axis")
-        # plt.ylabel("Y-axis")
+        plt.xlabel("X-axis")
+        plt.ylabel("Y-axis")
         # plt.yticks(np.arange(9), range(9))
 
         # # Display the heatmap
