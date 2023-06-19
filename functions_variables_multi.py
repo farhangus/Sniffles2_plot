@@ -219,16 +219,24 @@ class GenomeChartDataGenerator:
                   columns = sample_names)
         plt.figure(figsize=(10,10))
 
-        sns.heatmap(df_cm, cmap='PuOr')
+        sns.heatmap(df_cm, cmap='PuOr',annot=True, fmt=".0f")
+        plt.yticks(rotation=46)
 
-
+        plt.xticks(rotation=46)
         # # Create a heatmap
         # sns.heatmap(data, annot=True, fmt="d", cmap="YlGnBu")
 
         # # Set x and y axis labels
-        plt.xlabel("X-axis")
-        plt.ylabel("Y-axis")
+        plt.xlabel("right DELETION & left INSERTION")
+        plt.ylabel("sample_names")
+        n = len(sample_names)
+        line_color = (0, 0, 1, 0.5)  # RGBA color tuple (R=0, G=0, B=1, alpha=0.5)
+        plt.plot([0, n], [0, n], color=line_color, linewidth=2)
+
+
+
         # plt.yticks(np.arange(9), range(9))
+        plt.tight_layout()
 
         # # Display the heatmap
         plt.savefig("hetamap.jpg",dpi=800)
