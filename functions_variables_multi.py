@@ -179,8 +179,8 @@ class GenomeChartDataGenerator:
 
         upset['intersections'].bar_color = 'blue'
         upset['intersections'].bar_alpha = 0.7
-#        os.remove(self.output_file("tmp.txt"))
-#        os.remove(self.output_file("sv_sample_results.txt"))
+        os.remove(self.output_file("tmp.txt"))
+        os.remove(self.output_file("sv_sample_results.txt"))
         plt.savefig(self.output_file("sample_upset.png"), dpi=800, edgecolor="white")
 
     def heat_map_generator(self):
@@ -220,9 +220,9 @@ class GenomeChartDataGenerator:
         plt.figure(figsize=(10,10))
 
         sns.heatmap(df_cm, cmap='PuOr',annot=True, fmt=".0f")
-        plt.yticks(rotation=46)
+        plt.yticks(rotation=0)
 
-        plt.xticks(rotation=46)
+        plt.xticks(rotation=90)
         # # Create a heatmap
         # sns.heatmap(data, annot=True, fmt="d", cmap="YlGnBu")
 
@@ -237,6 +237,6 @@ class GenomeChartDataGenerator:
 
         # plt.yticks(np.arange(9), range(9))
         plt.tight_layout()
-
+        os.remove(self.output_file("tmp.txt"))
         # # Display the heatmap
-        plt.savefig("hetamap.jpg",dpi=800)
+        plt.savefig(self.output_file("hetamap.jpg"),dpi=800)
