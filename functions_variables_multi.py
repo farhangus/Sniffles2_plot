@@ -96,8 +96,7 @@ class GenomeChartDataGenerator:
                 elif sv_type == "DUP":
                     DUP_LIST.append(samples_AF)
 
-        NUMBER_SAMPLES = len(DEL_LIST[0])
-
+        NUMBER_SAMPLES = len(sample_names)
         bin_size = 0.04
         num_bins = int(1 / bin_size)
 
@@ -138,7 +137,8 @@ class GenomeChartDataGenerator:
                             f_sv_samples.write(obj.SUPP_VEC+"\n")
         if not sample_names:
             sample_names = ['sample_1']
-
+        if len(sample_names)>15:
+            exit()
         samples_SV_counter(
             self.output_file("tmp.txt"),
             self.output_file("sv_sample_results.txt"))
@@ -202,7 +202,8 @@ class GenomeChartDataGenerator:
                         samples_del.append(obj.SUPP_VEC)
                     elif obj.FILTER=="PASS" and obj.SVTYPE=="INS":
                         samples_ins.append(obj.SUPP_VEC)
-
+        if len(sample_names)>15:
+            exit();
         del_matrix=sample_to_matrix(sample_names,samples_del)
         ins_matrix=sample_to_matrix(sample_names,samples_ins)
 
@@ -214,7 +215,7 @@ class GenomeChartDataGenerator:
                   columns = sample_names)
         plt.figure(figsize=(10,10))
 
-        sns.heatmap(df_cm, cmap='PuOr',annot=True, fmt=".0f")
+        sns.heatmap(df_cm, cmap='PuOr',annot=False, fmt=".0f")
         plt.yticks(rotation=0)
 
         plt.xticks(rotation=90)
@@ -233,7 +234,7 @@ class GenomeChartDataGenerator:
 
         # plt.yticks(np.arange(9), range(9))
         plt.tight_layout()
-       #os.remove(self.output_file("tmp.txt"))
+        #os.remove(self.output_file("tmp.txt"))
         # # Display the heatmap
         plt.savefig(self.output_file("hetamap.jpg"),dpi=800)
         plt.close()
