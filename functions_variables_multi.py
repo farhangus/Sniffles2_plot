@@ -45,9 +45,9 @@ def count_frequency(elements):
 
 def samples_SV_counter(input_file_name, output_results):
     """counting the number of SVs"""
-    with open(input_file_name, 'r',encoding="utf-8") as f:
+    with open(input_file_name, 'r', encoding="utf-8") as f:
         c = collections.Counter(text.strip() for text in f)
-    with open(output_results, 'w',encoding="utf-8") as f:
+    with open(output_results, 'w', encoding="utf-8") as f:
         f.write("\n".join(
             f"{val} {key}" for key, val in c.most_common()))
 
@@ -96,7 +96,7 @@ class GenomeChartDataGenerator:
                 elif sv_type == "DUP":
                     DUP_LIST.append(samples_AF)
 
-        NUMBER_SAMPLES = len(DEL_LIST[0][:1000])
+        NUMBER_SAMPLES = len(DEL_LIST[0])
 
         bin_size = 0.04
         num_bins = int(1 / bin_size)
@@ -182,36 +182,31 @@ class GenomeChartDataGenerator:
         os.remove(self.output_file("tmp.txt"))
         os.remove(self.output_file("sv_sample_results.txt"))
         plt.savefig(self.output_file("sample_upset.png"), dpi=800, edgecolor="white")
+        plt.close()
 
     def heat_map_generator(self):
-        print("heat ap generator")
         sample_names=[]
         samples_del=[]
         samples_ins=[]
-        with open(self.output_file("tmp.txt"), "w",encoding="utf-8") as f_sv_samples:
-            with open(self.input_file_path, "r",encoding="utf-8") as f:
-                for line in f:
-                    if line.startswith("##"):
+        with open(self.input_file_path, "r",encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("##"):
+                    continue
+                if line.startswith("#C"):
+                    sample_names = [l.strip() for l in line.split('\t')[9:]]
+                else:
+                    obj = VCFLineSVPopulation(line)
+                    if obj.ERROR:
                         continue
-                    if line.startswith("#C"):
-                        sample_names = [l.strip() for l in line.split('\t')[9:]]
-                    else:
-                        obj = VCFLineSVPopulation(line)
-                        if obj.ERROR:
-                            continue
-                        if obj.FILTER=="PASS" and obj.SVTYPE=="DEL":
-                            f_sv_samples.write(f"{obj.SUPP_VEC}\n")
-                            samples_del.append(obj.SUPP_VEC)
-                        elif obj.FILTER=="PASS" and obj.SVTYPE=="INS":
-                            samples_ins.append(obj.SUPP_VEC)
+                    if obj.FILTER=="PASS" and obj.SVTYPE=="DEL":
+                        samples_del.append(obj.SUPP_VEC)
+                    elif obj.FILTER=="PASS" and obj.SVTYPE=="INS":
+                        samples_ins.append(obj.SUPP_VEC)
 
         del_matrix=sample_to_matrix(sample_names,samples_del)
         ins_matrix=sample_to_matrix(sample_names,samples_ins)
 
-        print(del_matrix)
-        print(ins_matrix)
         combined_matrix=np.tril(del_matrix) + np.tril(ins_matrix, -1).transpose()
-        print(combined_matrix)
         data = np.array(combined_matrix)
         # # mask = np.triu(np.ones_like(data))
         # df = pd.DataFrame(combined_matrix, columns=sample_names)
@@ -227,16 +222,18 @@ class GenomeChartDataGenerator:
         # sns.heatmap(data, annot=True, fmt="d", cmap="YlGnBu")
 
         # # Set x and y axis labels
-        plt.xlabel("right DELETION & left INSERTION")
+        plt.title("right DELETION & left INSERTION")
+        plt.xlabel("sample_names")
         plt.ylabel("sample_names")
         n = len(sample_names)
-        line_color = (0, 0, 1, 0.5)  # RGBA color tuple (R=0, G=0, B=1, alpha=0.5)
+        line_color = (0, 0, 1, 0.1)  # RGBA color tuple (R=0, G=0, B=1, alpha=0.5)
         plt.plot([0, n], [0, n], color=line_color, linewidth=2)
 
 
 
         # plt.yticks(np.arange(9), range(9))
         plt.tight_layout()
-        os.remove(self.output_file("tmp.txt"))
+       #os.remove(self.output_file("tmp.txt"))
         # # Display the heatmap
         plt.savefig(self.output_file("hetamap.jpg"),dpi=800)
+        plt.close()
