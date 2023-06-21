@@ -12,3 +12,4 @@ def multi_visulaizer(input_vcf_file,output_chrt):
     Genome_chart_data_generator.allele_frequency_chart_generator()
     Genome_chart_data_generator.samples_sv_numbers()
     Genome_chart_data_generator.heat_map_generator()
+    

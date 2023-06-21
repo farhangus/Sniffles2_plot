@@ -86,7 +86,7 @@ class GenomeChartDataGenerator:
                     continue
                 sv_type = obj.SVTYPE
                 samples_AF = obj.samples_AF
-
+                
                 if sv_type == "DEL":
                     DEL_LIST.append(samples_AF)
                 elif sv_type == "INS":
@@ -105,7 +105,6 @@ class GenomeChartDataGenerator:
             tmp_list_name_ins = separate_lists(INS_LIST, i)
             tmp_list_name_inv = separate_lists(INV_LIST, i)
             tmp_list_name_dup = separate_lists(DUP_LIST, i)
-
             plt.hist([tmp_list_name_del, tmp_list_name_ins, tmp_list_name_inv, tmp_list_name_dup],
                      bins=num_bins, range=(0, 1), label=['DEL', 'INS', 'INV', 'DUP'],
                      alpha=0.7, edgecolor='black')
@@ -138,10 +137,16 @@ class GenomeChartDataGenerator:
         if not sample_names:
             sample_names = ['sample_1']
         if len(sample_names)>15:
+            try:
+                os.remove(self.output_file("tmp.txt"))
+            except FileNotFoundError:
+                pass
             exit()
         samples_SV_counter(
             self.output_file("tmp.txt"),
             self.output_file("sv_sample_results.txt"))
+
+
         data = []
         data_set = []
         with open(self.output_file("sv_sample_results.txt"), "r",encoding="utf-8") as f:
@@ -179,7 +184,6 @@ class GenomeChartDataGenerator:
 
         upset['intersections'].bar_color = 'blue'
         upset['intersections'].bar_alpha = 0.7
-        os.remove(self.output_file("tmp.txt"))
         os.remove(self.output_file("sv_sample_results.txt"))
         plt.savefig(self.output_file("sample_upset.png"), dpi=800, edgecolor="white")
         plt.close()
@@ -203,6 +207,10 @@ class GenomeChartDataGenerator:
                     elif obj.FILTER=="PASS" and obj.SVTYPE=="INS":
                         samples_ins.append(obj.SUPP_VEC)
         if len(sample_names)>15:
+            try:
+                os.remove(self.output_file("tmp.txt"))
+            except FileNotFoundError:
+                pass
             exit();
         del_matrix=sample_to_matrix(sample_names,samples_del)
         ins_matrix=sample_to_matrix(sample_names,samples_ins)
@@ -234,7 +242,6 @@ class GenomeChartDataGenerator:
 
         # plt.yticks(np.arange(9), range(9))
         plt.tight_layout()
-        #os.remove(self.output_file("tmp.txt"))
         # # Display the heatmap
         plt.savefig(self.output_file("hetamap.jpg"),dpi=800)
         plt.close()
