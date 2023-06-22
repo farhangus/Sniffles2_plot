@@ -74,7 +74,8 @@ class VariantCount:
         plt.xlabel("Types")
         plt.yscale('log')
         plt.ylabel("Frequencies")
-        plt.title("Frequency of Variant Types")
+        number = 50
+        plt.title(f"Variant call (all SV)\n n={sum(frequencies)}")
 
         # Show the plot
         plt.savefig(self.output_file('variant_count.jpg'))

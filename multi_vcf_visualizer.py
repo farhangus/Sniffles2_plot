@@ -8,12 +8,12 @@ import sys
 sys.path.append('src/')  
 from  variant_count import *
 from functions_variables_multi import GenomeChartDataGenerator
-def multi_visulaizer(input_vcf_file,output_chrt):
+def multi_visulaizer(input_vcf_file,output_chart):
     """Multi VCF plot generator"""
-    V_C_obj=VariantCount(input_vcf_file, output_chrt)
+    V_C_obj=VariantCount(input_vcf_file, output_chart)
     V_C_obj.variant_count_chart_generator()
-    # Genome_chart_data_generator=GenomeChartDataGenerator(input_vcf_file,output_chrt)
-    # Genome_chart_data_generator.allele_frequency_chart_generator()
-    # Genome_chart_data_generator.samples_sv_numbers()
-    # Genome_chart_data_generator.heat_map_generator()
+    Genome_chart_data_generator=GenomeChartDataGenerator(input_vcf_file,output_chrt)
+    Genome_chart_data_generator.allele_frequency_chart_generator()
+    Genome_chart_data_generator.samples_sv_numbers()
+    Genome_chart_data_generator.heat_map_generator()
     
