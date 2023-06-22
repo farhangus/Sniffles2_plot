@@ -41,40 +41,47 @@ class VariantCount:
                 sv_type = obj.SVTYPE
                 samples_AF = obj.samples_AF
                 test_sv.append(sv_type)
-                
+
                 if sv_type == "DEL":
                     self.del_count += 1
                 elif sv_type == "INS":
-                    self.dup_count += 1
-                elif sv_type == "INV":
                     self.ins_count += 1
+                elif sv_type == "INV":
+                    self.inv_count += 1
                 elif sv_type == "DUP":
                     self.dup_count += 1
                 elif sv_type == "BND":
-                    self.bnd_count += 1 
+                    self.bnd_count += 1
                 elif sv_type == "CNV":
-                    self.cnv_count += 1 
+                    self.cnv_count += 1
                 else:
                     self.other_count +=1
-        labels=["DEL","DUP","INS","INV","BND","CNV","OTHER"]
-        frequencies = [self.del_count, self.dup_count, self.ins_count, 
-                       self.inv_count, self.dup_count, self. bnd_count,
+        x_labels=["DEL","DUP","INS","INV","BND","CNV","OTHER"]
+
+        frequencies = [self.del_count, self.dup_count, self.ins_count,
+                       self.inv_count, self. bnd_count,
                        self.cnv_count, self.other_count]
         # Create the bar plot
-        print(frequencies)
-        plt.bar(frequencies,frequencies)
-        
+
+        print(x_labels)
+        colors = ['blue', 'green', 'orange', 'red', 'purple', 'yellow', 'cyan']
+        print(type(x_labels))
+        plt.bar(x_labels,frequencies, color=colors )
+        for i, value in enumerate(frequencies):
+            plt.text(i, value, str(value), ha='center', va='bottom')
+
         # Add labels and title
         plt.xlabel("Types")
+        plt.yscale('log')
         plt.ylabel("Frequencies")
         plt.title("Frequency of Variant Types")
-        
+
         # Show the plot
         plt.savefig(self.output_file('variant_count.jpg'))
-                
 
 
-    
+
+
 
 
 
