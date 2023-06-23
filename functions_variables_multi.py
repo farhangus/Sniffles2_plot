@@ -99,8 +99,8 @@ class GenomeChartDataGenerator:
         NUMBER_SAMPLES = len(sample_names)
         bin_size = 0.04
         num_bins = int(1 / bin_size)
-
         for i in range(NUMBER_SAMPLES):
+
             tmp_list_name_del = separate_lists(DEL_LIST, i)
             tmp_list_name_ins = separate_lists(INS_LIST, i)
             tmp_list_name_inv = separate_lists(INV_LIST, i)
