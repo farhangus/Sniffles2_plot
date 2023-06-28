@@ -6,6 +6,8 @@ Created on Wed May 17 10:40:52 2023
 """
 import os
 import pandas as pd
+import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 from vcf_line_parser import VCFLineSVPopulation
 
@@ -23,13 +25,14 @@ class Sv_sites_per_genome:
 
     def sv_sites_per_genome(self):
         """generate the allele frequency plots"""
-        self.del_dict = 0
-        self.dup_dict = 0
-        self.ins_dict = 0
-        self.inv_dict = 0
-        self.bnd_dict = 0
-        self.cnv_dict = 0
-        self.other_dict = 0
+        self.data={}
+        self.del_list = []
+        self.dup_list = []
+        self.ins_list = []
+        self.inv_list = []
+        self.bnd_list = []
+        self.cnv_list = []
+        self.other_list = []
         with open(self.input_file_path, "r", encoding="utf-8") as f:
             for line in f:
                 if line.startswith("##"):
@@ -41,46 +44,127 @@ class Sv_sites_per_genome:
                     if obj.ERROR:
                         continue
                     if obj.FILTER=="PASS":
-                        print(obj.SVTYPE,obj.samples_AF)
-                        # if obj.sv_type == "DEL":
-                        #     self.del_dict []
-                        # elif sv_type == "INS":
-                        #     self.ins_dict += 1
-                        # elif sv_type == "INV":
-                        #     self.inv_dict += 1
-                        # elif sv_type == "DUP":
-                        #     self.dup_dict += 1
-                        # elif sv_type == "BND":
-                        #     self.bnd_dict += 1
-                        # elif sv_type == "CNV":
-                        #     self.cnv_dict += 1
-                        # else:
-                        #     self.other_dict += 1
-        # x_labels = ["DEL", "DUP", "INS", "INV", "BND", "CNV", "OTHER"]
+                        if obj.SVTYPE == "DEL":
+                            integer_list = [int(x) for x in obj.SUPP_VEC]
+                            self.del_list.append(list(integer_list))
+                        elif obj.SVTYPE == "INS":
+                            integer_list = [int(x) for x in obj.SUPP_VEC]
+                            self.ins_list.append(list(integer_list))
+                        elif obj.SVTYPE == "DUP":
+                            integer_list = [int(x) for x in obj.SUPP_VEC]
+                            self.dup_list.append(list(integer_list))
+                        elif obj.SVTYPE == "INV":
+                            integer_list = [int(x) for x in obj.SUPP_VEC]
+                            self.inv_list.append(list(integer_list))
+                        elif obj.SVTYPE == "BND":
+                            integer_list = [int(x) for x in obj.SUPP_VEC]
+                            self.bnd_list.append(list(integer_list))
+                        elif obj.SVTYPE == "CNV":
+                            integer_list = [int(x) for x in obj.SUPP_VEC]
+                            self.cnv_list.append(list(integer_list))
+                        else:
+                            integer_list = [int(x) for x in obj.SUPP_VEC]
+                            self.other_list.append(list(integer_list))
+                            
+                            
 
-        # frequencies = [
-        #     self.del_count,
-        #     self.dup_count,
-        #     self.ins_count,
-        #     self.inv_count,
-        #     self.bnd_count,
-        #     self.cnv_count,
-        #     self.other_count,
-        # ]
-        # # Create the bar plot
 
-        # print(x_labels)
-        # colors = ["blue", "green", "orange", "red", "purple", "yellow", "cyan"]
-        # print(type(x_labels))
-        # plt.bar(x_labels, frequencies, color=colors,label = x_labels)
-        # for i, value in enumerate(frequencies):
-        #     plt.text(i, value, str(value), ha="center", va="bottom")
-        # # Add labels and title
-        # plt.xlabel("SV Types")
-        # plt.yscale("log")
-        # plt.ylabel("SV count")
-        # plt.title(f"Variant call (all SV)\n n={sum(frequencies)}")
+        df=pd.DataFrame(self.del_list)        
+        column_sums = df.sum()
+        series_list = column_sums.tolist()
+        df.truncate(before=-1)
+        self.data['del']=series_list
+        
+        df=pd.DataFrame(self.ins_list)        
+        column_sums = df.sum()
+        series_list = column_sums.tolist()
+        df.truncate(before=-1)
+        self.data['ins']=series_list
+        
+        # df=pd.DataFrame(self.inv_list)        
+        # column_sums = df.sum()
+        # series_list = column_sums.tolist()
+        # df.truncate(before=-1)
+        # self.data['inv']=series_list
+        
+        # df=pd.DataFrame(self.dup_list)        
+        # column_sums = df.sum()
+        # series_list = column_sums.tolist()
+        # df.truncate(before=-1)
+        # self.data['dup']=series_list
+        
+        # df=pd.DataFrame(self.bnd_list)        
+        # column_sums = df.sum()
+        # series_list = column_sums.tolist()
+        # df.truncate(before=-1)
+        # self.data['bnd']=series_list
+        
+        # df=pd.DataFrame(self.cnv_list)        
+        # column_sums = df.sum()
+        # series_list = column_sums.tolist()
+        # df.truncate(before=-1)
+        # self.data['cnv']=series_list
+        
+        # df=pd.DataFrame(self.other_list)        
+        # column_sums = df.sum()
+        # series_list = column_sums.tolist()
+        # df.truncate(before=-1)
+        # self.data['other']=series_list
+        # print(self.data)
+        
+        df_final = pd.DataFrame(self.data)
+        
+        # Create the violin plot
+        plt.figure(figsize=(10, 6))
+        ax = sns.violinplot(data=df_final)
+        
+        plt.xlabel('Dataset', fontweight='bold', color='black')
+        plt.ylabel('Accuracy',  fontweight='bold', color='black')
+        plt.title('Accuracy Distribution')
+        
+        # Annotate mean, best, and worst model values
+        for i, dataset in enumerate(df_final.columns):
+            mean_value = df_final[dataset].mean()
+            max_value = df_final[dataset].max()
+            min_value = df_final[dataset].min()
+            
+            ax.text(i, mean_value, f'{mean_value:.0f}', ha='center', va='bottom', color='black')
+            ax.text(i, max_value, f'{max_value:.0f}', ha='center', va='bottom', color='black')
+            ax.text(i, min_value, f'{min_value:.0f}', ha='center', va='top', color='black')
+        
+        # Remove upper and right borders
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        
+        # Make model names bold
+        ax.set_xticklabels(ax.get_xticklabels(), fontweight='bold')
+        
+        
+        plt.tight_layout()    
+        plt.savefig('kirekhar.jpg')
 
-        # # Show the plot
-        # plt.savefig(self.output_file("variant_count.jpg"),dpi=800)
-        # plt.close()
+       #  df = pd.DataFrame(data)
+       #  df = df.set_index('Model')
+        
+       #  # Create the violin plot
+       #  plt.figure(figsize=(10, 6))
+       #  ax = sns.violinplot(data=df)
+
+       #  plt.savefig('kirekhar.jpg')
+
+       #  exit()
+       #  df = pd.DataFrame(self.del_list)
+       #  df.appned(self.ins_list)
+       #  column_sums = df.sum()
+       #  series_list = column_sums.tolist()
+       #  print(series_list)
+       #  mean_value = np.mean(series_list)
+       # # Create the violin plot
+       #  sns.violinplot(data=series_list)
+
+       #  plt.annotate('+', xy=(0.5, 0.5), xytext=(0.5, 0.5), xycoords='axes fraction',
+       #       textcoords='axes fraction', fontsize=40, ha='center', va='center')
+       #  plt.title("Violin Plot")
+       #  plt.xlabel("Values")
+       #  plt.ylabel("Density")
+       #  plt.savefig('kirekhar.jpg')
