@@ -118,9 +118,9 @@ class Sv_sites_per_genome:
         plt.figure(figsize=(10, 6))
         ax = sns.violinplot(data=df_final)
         
-        plt.xlabel('Dataset', fontweight='bold', color='black')
-        plt.ylabel('Accuracy',  fontweight='bold', color='black')
-        plt.title('Accuracy Distribution')
+        plt.xlabel('SV', fontweight='bold', color='black')
+        plt.ylabel('Count',  fontweight='bold', color='black')
+        plt.title('SV sites per genome',fontweight='bold', color='black')
         
         # Annotate mean, best, and worst model values
         for i, dataset in enumerate(df_final.columns):
@@ -128,9 +128,9 @@ class Sv_sites_per_genome:
             max_value = df_final[dataset].max()
             min_value = df_final[dataset].min()
             
-            ax.text(i, mean_value, f'{mean_value:.0f}', ha='center', va='bottom', color='black')
-            ax.text(i, max_value, f'{max_value:.0f}', ha='center', va='bottom', color='black')
-            ax.text(i, min_value, f'{min_value:.0f}', ha='center', va='top', color='black')
+            ax.text(i, mean_value, f'mean:{mean_value:.0f}', ha='center', va='bottom', color='black')
+            ax.text(i, max_value, f'max:{max_value:.0f}', ha='center', va='bottom', color='black')
+            ax.text(i, min_value, f'min:{min_value:.0f}', ha='center', va='top', color='black')
         
         # Remove upper and right borders
         ax.spines['top'].set_visible(False)
@@ -141,7 +141,7 @@ class Sv_sites_per_genome:
         
         
         plt.tight_layout()    
-        plt.savefig('kirekhar.jpg')
+        plt.savefig(self.output_file('sv_site_per_genome.jpg'))
 
        #  df = pd.DataFrame(data)
        #  df = df.set_index('Model')
