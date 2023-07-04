@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from vcf_line_parser import VCFLineSVPopulation
 from DataClasses import *
 from functions_variables_single import *
-
+from io_class import FileIO
 def sample_to_matrix(sample_names,samples):
 
     tmp_dict=count_frequency(samples)
@@ -51,15 +51,10 @@ def samples_SV_counter(input_file_name, output_results):
         f.write("\n".join(
             f"{val} {key}" for key, val in c.most_common()))
 
-class GenomeChartDataGenerator:
+class GenomeChartDataGenerator(FileIO):
     """generate plots for multi VCF files"""
-    def __init__(self, input_file_path, output_directory):
-        self.input_file_path = input_file_path
-        self.output_directory = output_directory
 
-    def output_file(self, filename):
-        """returnthe output file name and filepath"""
-        return os.path.join(self.output_directory,filename)
+
 
     def allele_frequency_chart_generator(self):
         """generate the allele frequency plots"""
@@ -86,7 +81,7 @@ class GenomeChartDataGenerator:
                     continue
                 sv_type = obj.SVTYPE
                 samples_AF = obj.samples_AF
-                
+
                 if sv_type == "DEL":
                     DEL_LIST.append(samples_AF)
                 elif sv_type == "INS":

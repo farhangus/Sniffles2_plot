@@ -8,18 +8,10 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from vcf_line_parser import VCFLineSVPopulation
+from io_class import FileIO
 
-
-class VariantCount:
+class VariantCount(FileIO):
     """generate plots for variant count all SVs"""
-
-    def __init__(self, input_file_path, output_directory):
-        self.input_file_path = input_file_path
-        self.output_directory = output_directory
-
-    def output_file(self, filename):
-        """returnthe output file name and filepath"""
-        return os.path.join(self.output_directory, filename)
 
     def variant_count_chart_generator(self):
         """generate the allele frequency plots"""

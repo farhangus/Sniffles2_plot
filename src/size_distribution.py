@@ -10,6 +10,7 @@ import numpy as np
 from vcf_line_parser import VCFLineSV
 from DataClasses import *
 SAMPLES=0
+from io_class import FileIO
 
 def list_percentage(list_):
     total_sum = sum(list_)
@@ -32,17 +33,11 @@ class VcfVariables:
         return cls([], [], [], [], [], [], [])
 
 
-class SizeDistribution:
+class SizeDistribution(FileIO):
     """generate size distribution plots"""
-    def __init__(self, input_file_path, output_directory):
-        self.input_file_path = input_file_path
-        self.output_directory = output_directory
-        self.__private_counter = 0 
-
-
-    def output_file(self, filename):
-        """returnthe output file name and filepath"""
-        return os.path.join(self.output_directory, filename)
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.__private_counter = 0
 
     def variants_couns(self):
         """return the number of each variant seprately"""
