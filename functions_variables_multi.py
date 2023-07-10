@@ -14,6 +14,8 @@ import matplotlib.pyplot as plt
 from vcf_line_parser import VCFLineSVPopulation
 from DataClasses import *
 from functions_variables_single import *
+import sys
+sys.path.append('src/')  
 from io_class import FileIO
 def sample_to_matrix(sample_names,samples):
 
