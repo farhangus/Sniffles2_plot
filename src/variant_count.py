@@ -61,9 +61,7 @@ class VariantCount(FileIO):
         ]
         # Create the bar plot
 
-        print(x_labels)
         colors = ["blue", "green", "orange", "red", "purple", "yellow", "cyan"]
-        print(type(x_labels))
         plt.bar(x_labels, frequencies, color=colors,label = x_labels)
         for i, value in enumerate(frequencies):
             plt.text(i, value, str(value), ha="center", va="bottom")
