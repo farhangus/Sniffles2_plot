@@ -18,7 +18,9 @@ def main():
         help="Specify the path to the VCF files directory (accepts both single and multi samples VCF files)",
         required=True,
     )
-    parser.add_argument("-o", "--output", help="Specify the path to the VCF output file")
+    parser.add_argument(
+        "-o", "--output", help="Specify the path to the VCF output file"
+    )
     args = parser.parse_args()
     input_file_path, output_file_path = args.input, args.output
     if os.path.isfile(input_file_path):
@@ -40,6 +42,7 @@ def main():
                 os.system(
                     f"python3 vcf_visulaizer.py -i {file_path} -o {directory_path}"
                 )
+
 
 if __name__ == "__main__":
     main()

@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from vcf_line_parser import VCFLineSVPopulation
 from io_class import FileIO
 
+
 class VariantCount(FileIO):
     """generate plots for variant count all SVs"""
 
@@ -62,7 +63,7 @@ class VariantCount(FileIO):
         # Create the bar plot
 
         colors = ["blue", "green", "orange", "red", "purple", "yellow", "cyan"]
-        plt.bar(x_labels, frequencies, color=colors,label = x_labels)
+        plt.bar(x_labels, frequencies, color=colors, label=x_labels)
         for i, value in enumerate(frequencies):
             plt.text(i, value, str(value), ha="center", va="bottom")
         # Add labels and title
@@ -72,5 +73,5 @@ class VariantCount(FileIO):
         plt.title(f"Variant call (all SV)\n n={sum(frequencies)}")
 
         # Show the plot
-        plt.savefig(self.output_file("variant_count.jpg"),dpi=800)
+        plt.savefig(self.output_file("variant_count.jpg"), dpi=800)
         plt.close()

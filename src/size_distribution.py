@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from vcf_line_parser import VCFLineSV
 from DataClasses import *
-SAMPLES=0
+
+SAMPLES = 0
 from io_class import FileIO
 
 def list_percentage(list_):
     total_sum = sum(list_)
     modified_list = [(x / total_sum) * 100 if x != 0 else 0 for x in list_]
     return modified_list
-
 
 @dataclass
 class VcfVariables:
@@ -35,6 +35,7 @@ class VcfVariables:
 
 class SizeDistribution(FileIO):
     """generate size distribution plots"""
+
     def __init__(self, *args):
         super().__init__(*args)
         self.__private_counter = 0
@@ -68,7 +69,6 @@ class SizeDistribution(FileIO):
 
     def generate_size_distribution_plot(self):
         tmp = self.variants_couns()
-
         all_size = result = [int(x / 6) for x in tmp.all_size]
         counts, bins = np.histogram(all_size, bins=np.logspace(0, 6, 50))
         bin_centers = (bins[:-1] + bins[1:]) / 2
@@ -82,10 +82,7 @@ class SizeDistribution(FileIO):
         plt.plot(bin_centers, counts, label="DEL", linewidth=0.5)
         plt.scatter(bin_centers, counts, s=5)
 
-        counts, bins = np.histogram(
-            tmp.ins_size,
-            bins=np.logspace(0, 6, 50),
-        )
+        counts, bins = np.histogram(tmp.ins_size,bins=np.logspace(0, 6, 50))
         counts = list_percentage(counts)
         bin_centers = (bins[:-1] + bins[1:]) / 2
         plt.plot(bin_centers, counts, label="INS", linewidth=0.5)
@@ -124,7 +121,7 @@ class SizeDistribution(FileIO):
 
         plt.ylabel("Fraction of SV")
         plt.title(f"Size Distribution (ALL SV) \n {text} ")
-
+        
         # Display the plot
         plt.savefig(self.output_file("size_distribution.jpg"), dpi=800)
         plt.close()
