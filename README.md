@@ -1,6 +1,6 @@
 # Sniffle Plot
 
-The Sniffle Plot is a Python program that generates plots for both single and multi-sample VCF files.
+The Sniffle Plot is a Python program that generates plots for single and multi-sample VCF files.
 
 Type of plots for single sample VCF file:
 
@@ -9,11 +9,14 @@ Type of plots for single sample VCF file:
 3. SV Size & Type Distribution
 4. Comparison of Length of Variants
 
-Type of plots for multi smaples VCF file:
-    1-Varriant Frequency spectrum
-    2-Upset plot for sample intersection
-
-
+Type of plots for multi samples VCF file:
+    
+1. Variant Frequency Spectrum
+2. Upset plot for sample intersection
+3. SV sites per genome
+4. Variant call all SVs
+5. Size distribution
+6. Heat map for deletion and insertion intersections
 
 
 ## Requirements
