@@ -9,6 +9,7 @@ import sys
 import os
 import argparse
 
+
 def main():
     parser = argparse.ArgumentParser(description="Snfiffle2 plot generator")
     parser.add_argument(

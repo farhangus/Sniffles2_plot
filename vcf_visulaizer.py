@@ -4,6 +4,8 @@ Created on Mon May 15 10:17:54 2023
 
 @author: HGSC - Farhang Jaryani
 """
+import sys
+sys.path.append('src/')  
 from arg_parser import argument_parser
 from functions_variables_multi import *
 from functions_variables_single import *
