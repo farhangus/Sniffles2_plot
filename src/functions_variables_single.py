@@ -110,7 +110,8 @@ def lenght_var_count_chart(
     maximum = max_value
     selected_values = [x for x in v_s_list if minimum <= x <= maximum]
     if len(selected_values)<2:
-        selected_values.append(minimum+1)
+        selected_values.append(min_val)
+        selected_values.append(max_value)
     # Determine the bin size
     bin_size = round((max(selected_values) - min(selected_values)) / 100)
     # Create bins based on the bin size

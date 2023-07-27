@@ -27,8 +27,8 @@ def single_visulaizer(input_vcf_file, output_path):
     """generate the plots for single vcf files"""
     V_C_obj=VariantCount(input_vcf_file, output_path)
     V_C_obj.variant_count_chart_generator()
-    S_D_obj=SizeDistribution(input_vcf_file, output_path)
-    S_D_obj.generate_size_distribution_plot()
+#    S_D_obj=SizeDistribution(input_vcf_file, output_path)
+  #  S_D_obj.generate_size_distribution_plot()
     
     del_ins_type_size_chart = os.path.join(output_path, "del_ins_type_size.jpg")
     lenght_variant_file = os.path.join(output_path, "lenght_variant.jpg")
