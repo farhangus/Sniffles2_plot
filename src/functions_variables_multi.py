@@ -22,11 +22,11 @@ from io_class import FileIO
 
 def sample_to_matrix(sample_names, samples):
     tmp_dict = count_frequency(samples)
-    lenght = len(sample_names)
-    string1 = lenght * "0"
+    length = len(sample_names)
+    string1 = length * "0"
     tmp_matrix = []
-    for i in range(lenght):
-        for j in range(lenght):
+    for i in range(length):
+        for j in range(length):
             tmp_string = list(string1)
             tmp_string[i] = "1"
             tmp_string[j] = "1"
@@ -35,7 +35,7 @@ def sample_to_matrix(sample_names, samples):
                 if key[i] == "1" and key[j] == "1":
                     tmp_sum += value
             tmp_matrix.append(tmp_sum)
-    two_dim_matrix = np.reshape(tmp_matrix, (lenght, lenght))
+    two_dim_matrix = np.reshape(tmp_matrix, (length, length))
     return two_dim_matrix
 
 
@@ -120,8 +120,7 @@ class GenomeChartDataGenerator(FileIO):
             plt.ylabel("Count (log)")
             plt.title("Variant Frequency Spectrum")
             plt.legend(loc="upper right", bbox_to_anchor=(1.1, 1.1), prop={"size": 5})
-
-            plt.savefig(self.output_file(sample_names[i]), dpi=800)
+            plt.savefig(self.output_file(sample_names[i].replace('.','_')), dpi=800)
             plt.close()
 
     def samples_sv_numbers(self):

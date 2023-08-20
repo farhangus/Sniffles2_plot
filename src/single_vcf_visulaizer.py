@@ -6,7 +6,7 @@ Created on Mon May 15 10:17:54 2023
 """
 import os
 import sys
-sys.path.append('src/')  
+sys.path.append('src/')
 from functions_variables_multi import GenomeChartDataGenerator
 from functions_variables_single import *
 from  variant_count import *
@@ -29,9 +29,9 @@ def single_visulaizer(input_vcf_file, output_path):
     V_C_obj.variant_count_chart_generator()
 #    S_D_obj=SizeDistribution(input_vcf_file, output_path)
   #  S_D_obj.generate_size_distribution_plot()
-    
+
     del_ins_type_size_chart = os.path.join(output_path, "del_ins_type_size.jpg")
-    lenght_variant_file = os.path.join(output_path, "lenght_variant.jpg")
+    length_variant_file = os.path.join(output_path, "length_variant.jpg")
     genome_chart_del_ins = os.path.join(output_path, "del_ins_genotype.jpg")
     genotype_chart_inv_dup = os.path.join(output_path, "inv_dup_genotype.jpg")
     out_chart_2 = os.path.join(output_path, "dup_inv_type_size.jpg")
@@ -67,8 +67,8 @@ def single_visulaizer(input_vcf_file, output_path):
         GenomeChartData(vcf_variables.INS_GENOTYPE, "INS"),
     )
 
-    lenght_var_count_chart(
-        lenght_variant_file,
+    length_var_count_chart(
+        length_variant_file,
         1,
         vcf_variables.DEL,
         10000,
@@ -79,8 +79,8 @@ def single_visulaizer(input_vcf_file, output_path):
         0,
         "DEl>=10K\nbin_size=500K",
     )
-    lenght_var_count_chart(
-        lenght_variant_file,
+    length_var_count_chart(
+        length_variant_file,
         1,
         vcf_variables.DEL,
         1000,
@@ -91,8 +91,8 @@ def single_visulaizer(input_vcf_file, output_path):
         0,
         "1k<=DEl<=10K\nbin_size=90",
     )
-    lenght_var_count_chart(
-        lenght_variant_file,
+    length_var_count_chart(
+        length_variant_file,
         1,
         vcf_variables.DEL,
         50,
@@ -103,8 +103,8 @@ def single_visulaizer(input_vcf_file, output_path):
         0,
         "50<=DEl<=1K\nbin_size=10",
     )
-    lenght_var_count_chart(
-        lenght_variant_file,
+    length_var_count_chart(
+        length_variant_file,
         0,
         vcf_variables.INS,
         50,
@@ -115,8 +115,8 @@ def single_visulaizer(input_vcf_file, output_path):
         0,
         "50<=INS<=1K\nbin_size=10",
     )
-    lenght_var_count_chart(
-        lenght_variant_file,
+    length_var_count_chart(
+        length_variant_file,
         0,
         INS_DUP,
         1000,
@@ -127,8 +127,8 @@ def single_visulaizer(input_vcf_file, output_path):
         0,
         "1k<=INS/DUP<=10K\nbin_size=90",
     )
-    lenght_var_count_chart(
-        lenght_variant_file,
+    length_var_count_chart(
+        length_variant_file,
         0,
         INS_DUP,
         0,

@@ -90,7 +90,7 @@ def sv_size_type_chart(l1, l2, label_1, label_2, path_2_chart):
     plt.clf()
 
 
-def lenght_var_count_chart(
+def length_var_count_chart(
     output_name,
     del_flag,
     v_s_list,
@@ -102,7 +102,7 @@ def lenght_var_count_chart(
     plt_titl,
     subplt_title,
 ):
-    """generate the comparision chart including 6 different charts for lenght variant"""
+    """generate the comparision chart including 6 different charts for length variant"""
     plt.subplot(1, 6, chart_pos)
     plt.subplots_adjust(wspace=0.05, hspace=0.05, bottom=0.3)
 
