@@ -38,7 +38,7 @@ class VCFLineSV(object):
             # not used REF, as _
             [self.CHROM, POS, self.ID, _, ALT, self.QUAL, self.FILTER, INFO,
              FORMAT] = tab_sep_fields[:VCF_MANDATORY_FIELDS]
-            self.POS = int(POS)
+            self.POS = int(POS) if POS else None
             # for INFO -> get_parsed_info()
             self.BREAKPOIN = ""
             self.SVTYPE = ""
@@ -59,7 +59,7 @@ class VCFLineSV(object):
             self.DV = 0
             # parse data
             self.get_genotype(tab_sep_fields[VCF_MANDATORY_FIELDS], FORMAT)
-            self.get_parsed_info(INFO)
+            self.get_parsed_info(INFO.strip("'\""))
             # for Translocation (BND/TRA)
             self.AF = self.DV/(self.DV+self.DR) if (self.AF == "NA" and self.DV+self.DR != 0) else self.AF
             self.TRA = "" if self.SVTYPE != "BND" else ALT
@@ -182,7 +182,8 @@ class VCFLineSVPopulation(object):
             [self.CHROM, POS, self.ID, _, ALT, _, self.FILTER, 
              INFO, FORMAT] = tab_sep_fields[:self.VCF_MANDATORY_FIELDS]
             self.SAMPLES = tab_sep_fields[self.VCF_MANDATORY_FIELDS:]
-            self.POS = int(POS)
+            self.POS = int(POS) if POS else None
+
             # for INFO -> get_parsed_info()
             self.BREAKPOINT = ""
             self.SVTYPE = ""
@@ -209,7 +210,7 @@ class VCFLineSVPopulation(object):
             self.sample_mosaic_status = []
             self.samples_obj = []
             # extract INFO and FORMAT
-            self.get_parsed_info(INFO)
+            self.get_parsed_info(INFO.strip("'\""))
             self.get_genotype(FORMAT, sample_header_names)
             # post-procesign
             self.TRA = "" if self.SVTYPE != "BND" else ALT
@@ -247,8 +248,8 @@ class VCFLineSVPopulation(object):
                         self.SUPPORT_LONG = int(info_val)
                     elif info_key == "SUPP_VEC":
                         self.SUPP_VEC = info_val
-                        self.SUPP_VEC_BOOL_LIST = [supp == "1" for supp in list(info_val)]
-                        self.N_SUPP_VEC = sum([int(supp) for supp in list(info_val)])
+                        self.SUPP_VEC_BOOL_LIST = [supp == "1" for supp in info_val]
+                        self.N_SUPP_VEC = sum([(int(supp) if supp else 0) for supp in info_val])
                     else:
                         pass
 
