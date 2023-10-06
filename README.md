@@ -26,6 +26,7 @@ The following dependencies are required to use the Genome Chart Data Generator:
 - Python 3.x
 - matplotlib
 - upsetplot
+- seaborn 
 
 ## usage
 For running the program for numbers of vcf files in a sepcific directory:

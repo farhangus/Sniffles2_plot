@@ -189,7 +189,7 @@ class GenomeChartDataGenerator(FileIO):
         upset["intersections"].bar_color = "blue"
         upset["intersections"].bar_alpha = 0.7
         os.remove(self.output_file("sv_sample_results.txt"))
-        plt.savefig(self.output_file("sample_upset.png"), dpi=200, edgecolor="white")
+        plt.savefig(self.output_file("sample_upset.png"), dpi=400, edgecolor="white")
         plt.close()
 
     def heat_map_generator(self):
