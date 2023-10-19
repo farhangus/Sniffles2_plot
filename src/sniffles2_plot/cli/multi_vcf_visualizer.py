@@ -7,11 +7,7 @@ Created on Mon May 15 10:17:54 2023
 import sys
 
 sys.path.append("src/")
-from variant_count import *
-from functions_variables_multi import GenomeChartDataGenerator
-from size_distribution import *
-from sv_sites_per_genome import *
-
+from sniffles2_plot.chart_generator import Sv_sites_per_genome,VariantCount,SizeDistribution,GenomeChartDataGenerator
 
 def multi_visulaizer(input_vcf_file, output_path):
     """Multi VCF plot generator"""

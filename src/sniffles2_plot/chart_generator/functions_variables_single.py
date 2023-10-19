@@ -6,8 +6,8 @@ Created on Wed May 17 10:40:52 2023
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from vcf_line_parser import VCFLineSV
-from DataClasses import *
+from sniffles2_plot.parser.vcf_line_parser import VCFLineSV
+from sniffles2_plot.schemas import *
 
 ranges = [
     (50, 100),

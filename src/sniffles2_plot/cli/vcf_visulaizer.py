@@ -7,10 +7,7 @@ Created on Mon May 15 10:17:54 2023
 import sys
 sys.path.append('src/')  
 from arg_parser import argument_parser
-from functions_variables_multi import *
-from functions_variables_single import *
-from single_vcf_visulaizer import single_visulaizer
-from multi_vcf_visualizer import multi_visulaizer
+from sniffles2_plot.cli import single_visulaizer, multi_visulaizer
 import os
 def multi_vcf_flag(input_vcf_file):
     with open(input_vcf_file, "r") as f:

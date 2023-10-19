@@ -9,8 +9,8 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from vcf_line_parser import VCFLineSVPopulation
-from io_class import FileIO
+from sniffles2_plot.parser.vcf_line_parser import VCFLineSVPopulation
+from sniffles2_plot.helper.io_class import FileIO
 
 
 class Sv_sites_per_genome(FileIO):

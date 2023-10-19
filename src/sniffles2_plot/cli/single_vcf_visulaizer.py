@@ -7,11 +7,9 @@ Created on Mon May 15 10:17:54 2023
 import os
 import sys
 sys.path.append('src/')
-from functions_variables_multi import GenomeChartDataGenerator
-from functions_variables_single import *
-from  variant_count import *
-from size_distribution import *
-
+from sniffles2_plot.chart_generator import VariantCount,\
+    vcf_number_variants,GenomeChartDataGenerator,sv_size_type_chart, length_var_count_chart,\
+    genome_bar_chart,GenomeChartData,count_numbers_in_ranges,ranges
 
 sv_ranges = {
     "DEL": None,

@@ -7,8 +7,8 @@ Created on Wed May 17 10:40:52 2023
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-from vcf_line_parser import VCFLineSVPopulation
-from io_class import FileIO
+from sniffles2_plot.parser.vcf_line_parser import VCFLineSVPopulation
+from sniffles2_plot.helper.io_class import FileIO
 
 
 class VariantCount(FileIO):

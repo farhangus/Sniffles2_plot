@@ -7,11 +7,11 @@ Created on Wed May 17 10:40:52 2023
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-from vcf_line_parser import VCFLineSV
-from DataClasses import *
+from sniffles2_plot.parser.vcf_line_parser import VCFLineSV
+from sniffles2_plot.schemas import *
 
 SAMPLES = 0
-from io_class import FileIO
+from sniffles2_plot.helper.io_class import FileIO
 
 def list_percentage(list_):
     total_sum = sum(list_)

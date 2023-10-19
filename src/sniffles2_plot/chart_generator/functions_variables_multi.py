@@ -11,13 +11,13 @@ import pandas as pd
 from upsetplot import plot
 from upsetplot import from_memberships
 import matplotlib.pyplot as plt
-from vcf_line_parser import VCFLineSVPopulation
-from DataClasses import *
-from functions_variables_single import *
+from sniffles2_plot.parser.vcf_line_parser import VCFLineSVPopulation
+from sniffles2_plot.schemas import *
+from sniffles2_plot.chart_generator.functions_variables_single import *
 import sys
 
 sys.path.append("src/")
-from io_class import FileIO
+from sniffles2_plot.helper.io_class import FileIO
 
 
 def sample_to_matrix(sample_names, samples):
