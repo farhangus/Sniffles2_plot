@@ -8,8 +8,7 @@ import os
 import collections
 import seaborn as sns
 import pandas as pd
-from upsetplot import plot
-from upsetplot import from_memberships
+from upsetplot import plot, from_memberships 
 import matplotlib.pyplot as plt
 from sniffles2_plot.parser.vcf_line_parser import VCFLineSVPopulation
 from sniffles2_plot.schemas import *

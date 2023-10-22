@@ -85,7 +85,6 @@ docs/_build/
 # PyBuilder
 .pybuilder/
 target/
-
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -328,3 +327,5 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+#generated artifacts
+generated/
