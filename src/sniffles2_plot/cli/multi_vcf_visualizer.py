@@ -9,7 +9,7 @@ import sys
 sys.path.append("src/")
 from sniffles2_plot.chart_generator import Sv_sites_per_genome,VariantCount,SizeDistribution,GenomeChartDataGenerator
 
-def multi_visulaizer(input_vcf_file, output_path):
+def multi_visualizer(input_vcf_file, output_path):
     """Multi VCF plot generator"""
     SV_site = Sv_sites_per_genome(input_vcf_file, output_path)
     SV_site.sv_sites_per_genome()

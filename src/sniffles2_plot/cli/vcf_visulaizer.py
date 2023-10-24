@@ -7,7 +7,7 @@ Created on Mon May 15 10:17:54 2023
 import sys
 sys.path.append('src/')  
 from arg_parser import argument_parser
-from sniffles2_plot.cli import single_visulaizer, multi_visulaizer
+from sniffles2_plot.cli import single_visulaizer, multi_visualizer
 import os
 def multi_vcf_flag(input_vcf_file):
     with open(input_vcf_file, "r") as f:
@@ -20,7 +20,7 @@ def multi_vcf_flag(input_vcf_file):
 def main():
     input_vcf_file,output_path=argument_parser()
     if (multi_vcf_flag(input_vcf_file)):
-        multi_visulaizer(input_vcf_file, output_path)
+        multi_visualizer(input_vcf_file, output_path)
     else:
         single_visulaizer(input_vcf_file, output_path)
 
