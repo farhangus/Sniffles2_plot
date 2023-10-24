@@ -5,9 +5,7 @@ Created on Mon May 15 10:17:54 2023
 @author: HGSC - Farhang Jaryani
 """
 import os
-import sys
 
-sys.path.append("src/")
 from sniffles2_plot.chart_generator import (
     GenomeChartData,
     GenomeChartDataGenerator,
@@ -34,8 +32,6 @@ def single_visulaizer(input_vcf_file, output_path):
     """generate the plots for single vcf files"""
     V_C_obj = VariantCount(input_vcf_file, output_path)
     V_C_obj.variant_count_chart_generator()
-    #    S_D_obj=SizeDistribution(input_vcf_file, output_path)
-    #  S_D_obj.generate_size_distribution_plot()
 
     del_ins_type_size_chart = os.path.join(output_path, "del_ins_type_size.jpg")
     length_variant_file = os.path.join(output_path, "length_variant.jpg")

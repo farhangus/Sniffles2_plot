@@ -50,12 +50,11 @@ def count_frequency(elements):
     return frequency_dict
 
 
-def samples_SV_counter(input_file_name, output_results):
+def samples_SV_counter(output_results, samples_intersections=()):
     """counting the number of SVs"""
-    with open(input_file_name, "r", encoding="utf-8") as f:
-        c = collections.Counter(text.strip() for text in f)
+    c_ = collections.Counter(samples_intersections)
     with open(output_results, "w", encoding="utf-8") as f:
-        f.write("\n".join(f"{val} {key}" for key, val in c.most_common()))
+        f.write("\n".join(f"{val} {key}" for key, val in c_.most_common()))
 
 
 class GenomeChartDataGenerator(FileIO):
@@ -127,29 +126,23 @@ class GenomeChartDataGenerator(FileIO):
     def samples_sv_numbers(self):
         """generate the upset plots for SVs per each sample"""
         sample_names = []
-        with open(self.output_file("tmp.txt"), "w", encoding="utf-8") as f_sv_samples:
-            with open(self.input_file_path, "r", encoding="utf-8") as f:
-                for line in f:
-                    if line.startswith("##"):
+        samples_intersections=[]
+        with open(self.input_file_path, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("##"):
+                    continue
+                if line.startswith("#C"):
+                    sample_names = [l.strip() for l in line.split("\t")[9:]]
+                else:
+                    obj = VCFLineSVPopulation(line)
+                    if obj.ERROR:
                         continue
-                    if line.startswith("#C"):
-                        sample_names = [l.strip() for l in line.split("\t")[9:]]
-                    else:
-                        obj = VCFLineSVPopulation(line)
-                        if obj.ERROR:
-                            continue
-                        if obj.FILTER == "PASS":
-                            f_sv_samples.write(obj.SUPP_VEC + "\n")
+                    if obj.FILTER == "PASS":
+                        samples_intersections.append(obj.SUPP_VEC)
         if not sample_names:
             sample_names = ["sample_1"]
-        if len(sample_names) > 15:
-            try:
-                os.remove(self.output_file("tmp.txt"))
-            except FileNotFoundError:
-                pass
-            exit()
         samples_SV_counter(
-            self.output_file("tmp.txt"), self.output_file("sv_sample_results.txt")
+            self.output_file("sv_sample_results.txt"),samples_intersections
         )
         data = []
         data_set = []
@@ -211,12 +204,6 @@ class GenomeChartDataGenerator(FileIO):
                         samples_del.append(obj.SUPP_VEC)
                     elif obj.FILTER == "PASS" and obj.SVTYPE == "INS":
                         samples_ins.append(obj.SUPP_VEC)
-        if len(sample_names) > 15:
-            try:
-                os.remove(self.output_file("tmp.txt"))
-            except FileNotFoundError:
-                pass
-            exit()
         del_matrix = sample_to_matrix(sample_names, samples_del)
         ins_matrix = sample_to_matrix(sample_names, samples_ins)
 

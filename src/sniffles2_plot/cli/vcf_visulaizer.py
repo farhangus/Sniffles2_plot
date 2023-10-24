@@ -11,7 +11,7 @@ import os
 
 from arg_parser import argument_parser
 
-from sniffles2_plot.cli import multi_visualizer, single_visulaizer
+from sniffles2_plot.cli import generate_multi_vcf_charts, single_visulaizer
 
 
 def multi_vcf_flag(input_vcf_file):
@@ -26,7 +26,7 @@ def multi_vcf_flag(input_vcf_file):
 def main():
     input_vcf_file, output_path = argument_parser()
     if multi_vcf_flag(input_vcf_file):
-        multi_visualizer(input_vcf_file, output_path)
+        generate_multi_vcf_charts(input_vcf_file, output_path)
     else:
         single_visulaizer(input_vcf_file, output_path)
 
