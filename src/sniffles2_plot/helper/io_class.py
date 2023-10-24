@@ -1,5 +1,6 @@
 import os
 
+
 class FileIO:
     def __init__(self, input_file_path, output_directory):
         self.input_file_path = input_file_path

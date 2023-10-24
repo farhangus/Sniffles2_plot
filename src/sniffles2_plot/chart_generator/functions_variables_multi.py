@@ -4,16 +4,18 @@ Created on Wed May 17 10:40:52 2023
 
 @author: HGSC
 """
-import os
 import collections
-import seaborn as sns
-import pandas as pd
-from upsetplot import plot, from_memberships 
+import os
+import sys
+
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+from upsetplot import from_memberships, plot
+
+from sniffles2_plot.chart_generator.functions_variables_single import *
 from sniffles2_plot.parser.vcf_line_parser import VCFLineSVPopulation
 from sniffles2_plot.schemas import *
-from sniffles2_plot.chart_generator.functions_variables_single import *
-import sys
 
 sys.path.append("src/")
 from sniffles2_plot.helper.io_class import FileIO
@@ -119,7 +121,7 @@ class GenomeChartDataGenerator(FileIO):
             plt.ylabel("Count (log)")
             plt.title("Variant Frequency Spectrum")
             plt.legend(loc="upper right", bbox_to_anchor=(1.1, 1.1), prop={"size": 5})
-            plt.savefig(self.output_file(sample_names[i].replace('.','_')), dpi=800)
+            plt.savefig(self.output_file(sample_names[i].replace(".", "_")), dpi=800)
             plt.close()
 
     def samples_sv_numbers(self):

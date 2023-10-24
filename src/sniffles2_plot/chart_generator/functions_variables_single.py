@@ -6,6 +6,7 @@ Created on Wed May 17 10:40:52 2023
 """
 import matplotlib.pyplot as plt
 import numpy as np
+
 from sniffles2_plot.parser.vcf_line_parser import VCFLineSV
 from sniffles2_plot.schemas import *
 
@@ -109,7 +110,7 @@ def length_var_count_chart(
     minimum = min_val
     maximum = max_value
     selected_values = [x for x in v_s_list if minimum <= x <= maximum]
-    if len(selected_values)<2:
+    if len(selected_values) < 2:
         selected_values.append(min_val)
         selected_values.append(max_value)
     # Determine the bin size

@@ -5,18 +5,22 @@ Created on Wed May 17 10:40:52 2023
 @author: HGSC
 """
 import os
+
 import matplotlib.pyplot as plt
 import numpy as np
+
 from sniffles2_plot.parser.vcf_line_parser import VCFLineSV
 from sniffles2_plot.schemas import *
 
 SAMPLES = 0
 from sniffles2_plot.helper.io_class import FileIO
 
+
 def list_percentage(list_):
     total_sum = sum(list_)
     modified_list = [(x / total_sum) * 100 if x != 0 else 0 for x in list_]
     return modified_list
+
 
 @dataclass
 class VcfVariables:
@@ -82,7 +86,7 @@ class SizeDistribution(FileIO):
         plt.plot(bin_centers, counts, label="DEL", linewidth=0.5)
         plt.scatter(bin_centers, counts, s=5)
 
-        counts, bins = np.histogram(tmp.ins_size,bins=np.logspace(0, 6, 50))
+        counts, bins = np.histogram(tmp.ins_size, bins=np.logspace(0, 6, 50))
         counts = list_percentage(counts)
         bin_centers = (bins[:-1] + bins[1:]) / 2
         plt.plot(bin_centers, counts, label="INS", linewidth=0.5)
@@ -121,7 +125,7 @@ class SizeDistribution(FileIO):
 
         plt.ylabel("Fraction of SV")
         plt.title(f"Size Distribution (ALL SV) \n {text} ")
-        
+
         # Display the plot
         plt.savefig(self.output_file("size_distribution.jpg"), dpi=800)
         plt.close()

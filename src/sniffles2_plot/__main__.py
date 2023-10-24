@@ -5,9 +5,9 @@ Created on Mon Jun  5 10:48:59 2023
 @author: HGSC
 """
 
-import sys
-import os
 import argparse
+import os
+import sys
 
 
 def main():

@@ -5,12 +5,14 @@ Created on Wed May 17 10:40:52 2023
 @author: HGSC
 """
 import os
-import pandas as pd
-import numpy as np
-import seaborn as sns
+
 import matplotlib.pyplot as plt
-from sniffles2_plot.parser.vcf_line_parser import VCFLineSVPopulation
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
 from sniffles2_plot.helper.io_class import FileIO
+from sniffles2_plot.parser.vcf_line_parser import VCFLineSVPopulation
 
 
 class Sv_sites_per_genome(FileIO):
