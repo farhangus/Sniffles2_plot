@@ -14,5 +14,4 @@ def test_generate_should_output_expected_files(tmp_path: Path) -> None:
     generate_multi_vcf_charts(input_vcf_file, output_path)
     actual_output_file_names = listdir(output_path)
     # assert
-    breakpoint()
     assert len(actual_output_file_names) == 7
