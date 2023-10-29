@@ -113,16 +113,14 @@ def length_var_count_chart(
     if len(selected_values) < 2:
         bin_size=0
     else:
-        print(selected_values)
         bin_size =ceil((maximum - minimum)/100)
-        print(maximum, minimum, bin_size)
     # edge case1, len(selected values) < 2
     # len (set(selected_vales)) == 1
     # Create bins based on the bin size
     if bin_size == 0:
         bins = []
     else:
-        bins = np.arange(minimum,maximum + bin_size, bin_size)
+        bins = np.arange(minimum,maximum, bin_size)
     # Count the number of values that fall into each bin
     bin_counts, _ = np.histogram(selected_values, bins)
     # Display the bin plot
@@ -142,7 +140,7 @@ def length_var_count_chart(
     plt.title(subplt_title, size=5)
     if del_flag:
         plt.gca().invert_xaxis()
-    plt.savefig(output_name, dpi=100)
+    plt.savefig(output_name, dpi=400)
 
 
 def vcf_number_variants(input_vcf_file):

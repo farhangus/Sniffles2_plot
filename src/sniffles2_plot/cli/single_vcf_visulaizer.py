@@ -78,7 +78,7 @@ def single_visulaizer(input_vcf_file, output_path):
         50000000,
         1,
         1,
-        [10000, 25000000, 50000000],
+        [25000000, 50000000],
         0,
         "DEl>=10K\nbin_size=500K",
     )
@@ -90,7 +90,7 @@ def single_visulaizer(input_vcf_file, output_path):
         10000,
         2,
         0,
-        [1000, 5000],
+        [5000, 10000],
         0,
         "1k<=DEl<=10K\nbin_size=90",
     )
@@ -102,7 +102,7 @@ def single_visulaizer(input_vcf_file, output_path):
         1000,
         3,
         0,
-        [50, 500],
+        [0,500, 1000],
         0,
         "50<=DEl<=1K\nbin_size=10",
     )
@@ -134,7 +134,7 @@ def single_visulaizer(input_vcf_file, output_path):
         length_variant_file,
         0,
         INS_DUP,
-        0,
+        10000,
         50000000,
         6,
         0,
