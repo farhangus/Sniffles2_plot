@@ -190,6 +190,7 @@ sdist/
 var/
 wheels/
 share/python-wheels/
+test/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -329,3 +330,4 @@ cython_debug/
 #.idea/
 #generated artifacts
 generated/
+tests/
