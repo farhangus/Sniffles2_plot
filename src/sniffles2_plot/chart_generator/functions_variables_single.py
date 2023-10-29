@@ -6,6 +6,7 @@ Created on Wed May 17 10:40:52 2023
 """
 import matplotlib.pyplot as plt
 import numpy as np
+from math import ceil
 
 from sniffles2_plot.parser.vcf_line_parser import VCFLineSV
 from sniffles2_plot.schemas import *
@@ -95,7 +96,7 @@ def length_var_count_chart(
     output_name,
     del_flag,
     v_s_list,
-    min_val,
+    min_value,
     max_value,
     chart_pos,
     ytick_flag,
@@ -106,17 +107,22 @@ def length_var_count_chart(
     """generate the comparision chart including 6 different charts for length variant"""
     plt.subplot(1, 6, chart_pos)
     plt.subplots_adjust(wspace=0.05, hspace=0.05, bottom=0.3)
-
-    minimum = min_val
+    minimum = min_value
     maximum = max_value
     selected_values = [x for x in v_s_list if minimum <= x <= maximum]
     if len(selected_values) < 2:
-        selected_values.append(min_val)
-        selected_values.append(max_value)
-    # Determine the bin size
-    bin_size = round((max(selected_values) - min(selected_values)) / 100)
+        bin_size=0
+    else:
+        print(selected_values)
+        bin_size =ceil((maximum - minimum)/100)
+        print(maximum, minimum, bin_size)
+    # edge case1, len(selected values) < 2
+    # len (set(selected_vales)) == 1
     # Create bins based on the bin size
-    bins = np.arange(min(selected_values), max(selected_values) + bin_size, bin_size)
+    if bin_size == 0:
+        bins = []
+    else:
+        bins = np.arange(minimum,maximum + bin_size, bin_size)
     # Count the number of values that fall into each bin
     bin_counts, _ = np.histogram(selected_values, bins)
     # Display the bin plot
@@ -136,7 +142,7 @@ def length_var_count_chart(
     plt.title(subplt_title, size=5)
     if del_flag:
         plt.gca().invert_xaxis()
-    plt.savefig(output_name, dpi=1000)
+    plt.savefig(output_name, dpi=100)
 
 
 def vcf_number_variants(input_vcf_file):
