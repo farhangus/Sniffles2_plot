@@ -29,6 +29,7 @@ The following dependencies are required to use the Genome Chart Data Generator:
 - seaborn 
 
 ## usage
+export PYTHONPATH=.:./src
 For running the program for numbers of vcf files in a sepcific directory:
      python3 sniffles2_plots.py -i <VCF_files_folder>
      
