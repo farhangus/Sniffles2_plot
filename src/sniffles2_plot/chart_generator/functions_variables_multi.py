@@ -228,5 +228,5 @@ class GenomeChartDataGenerator(FileIO):
         # plt.yticks(np.arange(9), range(9))
         plt.tight_layout()
         # # Display the heatmap
-        plt.savefig(self.output_file("hetamap.jpg"), dpi=800)
+        plt.savefig(self.output_file("heatmap.jpg"), dpi=800)
         plt.close()
