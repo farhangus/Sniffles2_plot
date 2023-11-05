@@ -1,4 +1,6 @@
-# Sniffle Plot
+# Sniffles Plot
+
+## Introduction
 
 The Sniffle Plot is a Python program that generates plots for single and multi-sample VCF files.
 
@@ -19,20 +21,28 @@ Type of plots for multi samples VCF file:
 6. Heat map for deletion and insertion intersections
 
 
-## Requirements
 
-The following dependencies are required to use the Genome Chart Data Generator:
+## Quick Start
+To install this package you can simply run the following command:
+```
+$ pip3 install sniffles2-plot
+```
 
-- Python 3.x
-- matplotlib
-- upsetplot
-- seaborn 
-
-## usage
-export PYTHONPATH=.:./src
-For running the program for numbers of vcf files in a sepcific directory:
-     python3 sniffles2_plots.py -i <VCF_files_folder>
+For running the program for multiple vcf files located in a sepcific directory:
+```
+$ python3 -m sniffles2_plots -i <VCF_files_folder>
+``` 
      
-For running the program for single vcf file:
-     python3 sniffles2_plots.py -i <file_name> -o <output_folder>
+For running the program for a single vcf file:
+```
+$ python3 -m sniffles2_plots -i <file_name> -o <output_folder>
+```
+Sample results of output:
+
+<img src="./pictures/del_ins_type_size.jpg" width="200" height="200">
+<img src="./pictures/hetamap.jpg" width="200" height="200">
+
+<img src="./pictures/length_variant.jpg" width="200" height="200">
+<img src="./pictures/sample_upset.png" width="200" height="200">
+
 
