@@ -330,4 +330,5 @@ cython_debug/
 #.idea/
 #generated artifacts
 generated/
-tests/
+.DS_STORE
+
