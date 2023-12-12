@@ -37,3 +37,4 @@ def entry_point():
                 directory_path = os.path.join(input_file_path, os.path.splitext(file_name.name)[0])
                 os.makedirs(directory_path, exist_ok=True)
                 generate_charts(file_name, directory_path)
+                
