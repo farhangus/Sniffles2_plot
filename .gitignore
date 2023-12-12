@@ -331,4 +331,5 @@ cython_debug/
 #generated artifacts
 generated/
 .DS_STORE
+fixtures/
 

@@ -110,10 +110,9 @@ def length_var_count_chart(
     minimum = min_value
     maximum = max_value
     selected_values = [x for x in v_s_list if minimum <= x <= maximum]
-    if len(selected_values) < 2:
-        bin_size=0
-    else:
-        bin_size =ceil((maximum - minimum)/100)
+    if len(selected_values) < 1:
+        return
+    bin_size =ceil((maximum - minimum)/100)
     # edge case1, len(selected values) < 2
     # len (set(selected_vales)) == 1
     # Create bins based on the bin size
@@ -137,6 +136,7 @@ def length_var_count_chart(
     else:
         plt.yticks([1, 10, 100, 1000, 10000])
         plt.yticks([])
+        
     plt.title(subplt_title, size=5)
     if del_flag:
         plt.gca().invert_xaxis()

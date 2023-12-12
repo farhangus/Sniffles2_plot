@@ -30,12 +30,12 @@ $ pip3 install sniffles2-plot
 
 For running the program for multiple vcf files located in a sepcific directory:
 ```
-$ python3 -m sniffles2_plots -i <VCF_files_folder>
+$ python3 -m sniffles2_plot -i <VCF_files_folder>
 ``` 
      
 For running the program for a single vcf file:
 ```
-$ python3 -m sniffles2_plots -i <file_name> -o <output_folder>
+$ python3 -m sniffles2_plot -i <file_name> -o <output_folder>
 ```
 Sample results of output:
 
