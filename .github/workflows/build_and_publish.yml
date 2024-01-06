@@ -27,9 +27,8 @@ jobs:
       run: |
         python -m build
         echo "wheel file is created"
-        echo 'github.event_ref'
     - name: Publish to PyPI
-      if: github.event_name == 'push' && github.event_ref == 'refs/heads/master'
+#      if: github.event_name == 'push' && github.event_ref == 'refs/heads/master'
       run: |
         echo "Deploying to PyPI..."
         python -m twine upload --repository pypi --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} dist/*
