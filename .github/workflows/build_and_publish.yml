@@ -27,7 +27,7 @@ jobs:
       run: |
         python -m build
         echo "wheel file is created"
-        echo "$github.event_ref"
+        echo 'github.event_ref'
     - name: Publish to PyPI
       if: github.event_name == 'push' && github.event_ref == 'refs/heads/main'
       run: |
