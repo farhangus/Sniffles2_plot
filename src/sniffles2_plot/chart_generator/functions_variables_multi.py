@@ -66,7 +66,7 @@ class GenomeChartDataGenerator(FileIO):
         with open(self.input_file_path, "r", encoding="utf-8") as f:
             for line in f:
                 if line.startswith("#C"):
-                    sample_names = [l.strip() for l in line.split("\t")[9:]]
+                    sample_names = [l.strip() + str(index+1) for index, l in enumerate(line.split("\t")[9:])]
                     break
         if not sample_names:
             sample_names = ["sample_1"]
@@ -132,7 +132,7 @@ class GenomeChartDataGenerator(FileIO):
                 if line.startswith("##"):
                     continue
                 if line.startswith("#C"):
-                    sample_names = [l.strip() for l in line.split("\t")[9:]]
+                    sample_names = [l.strip()+ str(index+1) for index, l in enumerate(line.split("\t")[9:])]
                 else:
                     obj = VCFLineSVPopulation(line)
                     if obj.ERROR:
@@ -200,7 +200,7 @@ class GenomeChartDataGenerator(FileIO):
                 if line.startswith("##"):
                     continue
                 if line.startswith("#C"):
-                    sample_names = [l.strip() for l in line.split("\t")[9:]]
+                    sample_names = [l.strip() + str (index+1) for index, l in enumerate(line.split("\t")[9:])]
                 else:
                     obj = VCFLineSVPopulation(line)
                     if obj.ERROR:
@@ -211,13 +211,12 @@ class GenomeChartDataGenerator(FileIO):
                         samples_ins.append(obj.SUPP_VEC)
         del_matrix = sample_to_matrix(sample_names, samples_del)
         ins_matrix = sample_to_matrix(sample_names, samples_ins)
-
         combined_matrix = np.tril(del_matrix) + np.tril(ins_matrix, -1).transpose()
         data = np.array(combined_matrix)
         # # mask = np.triu(np.ones_like(data))
         # df = pd.DataFrame(combined_matrix, columns=sample_names)
         df_cm = pd.DataFrame(combined_matrix, index=sample_names, columns=sample_names)
-        plt.figure(figsize=(10, 10))
+        plt.figure(figsize=(10,10))
         sns.heatmap(df_cm, cmap="PuOr", annot=False, fmt=".0f")
         plt.yticks(rotation=0)
         plt.xticks(rotation=90)
