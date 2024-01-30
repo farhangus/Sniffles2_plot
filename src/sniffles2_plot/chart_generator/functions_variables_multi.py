@@ -209,10 +209,15 @@ class GenomeChartDataGenerator(FileIO):
                         samples_del.append(obj.SUPP_VEC)
                     elif obj.FILTER == "PASS" and obj.SVTYPE == "INS":
                         samples_ins.append(obj.SUPP_VEC)
+        # counter = sum(1 for i in samples_ins if i[0] == "1" and i[-1] == "1")
+        # print(counter)
         del_matrix = sample_to_matrix(sample_names, samples_del)
         ins_matrix = sample_to_matrix(sample_names, samples_ins)
         combined_matrix = np.tril(del_matrix) + np.tril(ins_matrix, -1).transpose()
         data = np.array(combined_matrix)
+        np.fill_diagonal(combined_matrix, 0)
+
+
         # # mask = np.triu(np.ones_like(data))
         # df = pd.DataFrame(combined_matrix, columns=sample_names)
         df_cm = pd.DataFrame(combined_matrix, index=sample_names, columns=sample_names)
