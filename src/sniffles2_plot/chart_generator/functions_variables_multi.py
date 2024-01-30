@@ -214,21 +214,21 @@ class GenomeChartDataGenerator(FileIO):
         del_matrix = sample_to_matrix(sample_names, samples_del)
         ins_matrix = sample_to_matrix(sample_names, samples_ins)
         combined_matrix = np.tril(del_matrix) + np.tril(ins_matrix, -1).transpose()
+
         data = np.array(combined_matrix)
         np.fill_diagonal(combined_matrix, 0)
-
 
         # # mask = np.triu(np.ones_like(data))
         # df = pd.DataFrame(combined_matrix, columns=sample_names)
         df_cm = pd.DataFrame(combined_matrix, index=sample_names, columns=sample_names)
-        plt.figure(figsize=(10,10))
+        plt.figure(figsize=(15,15))
         sns.heatmap(df_cm, cmap="PuOr", annot=False, fmt=".0f")
         plt.yticks(rotation=0)
         plt.xticks(rotation=90)
         # # Create a heatmap
         # sns.heatmap(data, annot=True, fmt="d", cmap="YlGnBu")
         # # Set x and y axis labels
-        plt.title("right DELETION & left INSERTION")
+        plt.title("right Insertion & left Deletion")
         plt.xlabel("sample_names")
         plt.ylabel("sample_names")
         n = len(sample_names)
@@ -237,5 +237,5 @@ class GenomeChartDataGenerator(FileIO):
         # plt.yticks(np.arange(9), range(9))
         plt.tight_layout()
         # # Display the heatmap
-        plt.savefig(self.output_file("heatmap.jpg"), dpi=800)
+        plt.savefig(self.output_file("heatmap.jpg"), dpi=400)
         plt.close()
