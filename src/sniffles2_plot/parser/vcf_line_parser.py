@@ -331,6 +331,7 @@ class VCFLineSVPopulation(object):
             sample_gt = VCFSampleGenotype()
             split_gt = each_gt.split(":")
             for gt_format, gt_value in zip(split_format, split_gt):
+                gt_value=gt_value.strip()
                 if gt_value == '.':
                     continue
                 if gt_format == "GT":

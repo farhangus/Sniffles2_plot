@@ -66,7 +66,8 @@ class GenomeChartDataGenerator(FileIO):
         with open(self.input_file_path, "r", encoding="utf-8") as f:
             for line in f:
                 if line.startswith("#C"):
-                    sample_names = [l.strip() + str(index+1) for index, l in enumerate(line.split("\t")[9:])]
+                 #   sample_names = [l.strip() + str(index+1) for index, l in enumerate(line.split("\t")[9:])]
+                    sample_names = line.split("\t")[9:]
                     break
         if not sample_names:
             sample_names = ["sample_1"]
@@ -132,7 +133,7 @@ class GenomeChartDataGenerator(FileIO):
                 if line.startswith("##"):
                     continue
                 if line.startswith("#C"):
-                    sample_names = [l.strip()+ str(index+1) for index, l in enumerate(line.split("\t")[9:])]
+                    sample_names = [l.strip() for index, l in enumerate(line.split("\t")[9:])]
                 else:
                     obj = VCFLineSVPopulation(line)
                     if obj.ERROR:
@@ -161,6 +162,8 @@ class GenomeChartDataGenerator(FileIO):
                 tmp_list = [
                     sample_names[i] for i, item_i in enumerate(item) if item_i != "0"
                 ]
+
+               # tmp_list = sample_names
                 data_list.append(tmp_list)
             else:
                 data_list.append([])
@@ -200,7 +203,8 @@ class GenomeChartDataGenerator(FileIO):
                 if line.startswith("##"):
                     continue
                 if line.startswith("#C"):
-                    sample_names = [l.strip() + str (index+1) for index, l in enumerate(line.split("\t")[9:])]
+                  #  sample_names = [l.strip() + str (index+1) for index, l in enumerate(line.split("\t")[9:])]
+                    sample_names = [l.strip()  for index, l in enumerate(line.split("\t")[9:])]
                 else:
                     obj = VCFLineSVPopulation(line)
                     if obj.ERROR:
