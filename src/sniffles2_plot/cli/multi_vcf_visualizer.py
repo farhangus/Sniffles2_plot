@@ -40,8 +40,8 @@ def generate_multi_vcf_charts(input_vcf_file, output_path):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    # try:
-    #     Genome_chart_data_generator.heat_map_generator()
-    # except Exception as e:
-    #     print(f"An error occurred: {e}")
+    try:
+        Genome_chart_data_generator.heat_map_generator()
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
