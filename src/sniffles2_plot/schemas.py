@@ -28,6 +28,23 @@ class VcfVariables:
     BND_GENOTYPE: list
     BND_AF: list
 
+    PHASED_DEL: list
+    PHASED_DEL_GENOTYPE: list
+    PHASED_DEL_AF: list
+    PHASED_INS: list
+    PHASED_INS_GENOTYPE: list
+    PHASED_INS_AF: list
+    PHASED_DUP: list
+    PHASED_DUP_GENOTYPE: list
+    PHASED_DUP_AF: list
+    PHASED_INV: list
+    PHASED_INV_GENOTYPE: list
+    PHASED_INV_AF: list
+    PHASED_BND: list
+    PHASED_BND_GENOTYPE: list
+    PHASED_BND_AF: list
+    HAS_PHASED: bool=False
+
     @classmethod
     def new(cls):
-        return cls([], [], [], [], [], [], [], [], [], [], [], [], [], [], [])
+        return cls([], [], [], [], [], [], [], [], [], [], [], [], [], [], [],[], [], [], [], [], [], [], [], [], [], [], [], [], [], [])

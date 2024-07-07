@@ -153,24 +153,52 @@ def vcf_number_variants(input_vcf_file):
                 obj = VCFLineSV(line)
                 if obj.ERROR:
                     continue
+                if obj.phased:
+                    vcf_variables.HAS_PHASED=True
                 if obj.SVTYPE == "DEL":
-                    vcf_variables.DEL.append(abs(obj.SVLEN))
-                    vcf_variables.DEL_GENOTYPE.append(obj.GENOTYPE)
-                    vcf_variables.DEL_AF.append(obj.AF)
-                elif obj.SVTYPE == "INS":
-                    vcf_variables.INS.append(obj.SVLEN)
-                    vcf_variables.INS_GENOTYPE.append(obj.GENOTYPE)
-                    vcf_variables.INS_AF.append(obj.AF)
-                elif obj.SVTYPE == "INV":
-                    vcf_variables.INV.append(obj.SVLEN)
-                    vcf_variables.INV_GENOTYPE.append(obj.GENOTYPE)
-                    vcf_variables.INV_AF.append(obj.AF)
-                elif obj.SVTYPE == "DUP":
-                    vcf_variables.DUP.append(obj.SVLEN)
-                    vcf_variables.DUP_GENOTYPE.append(obj.GENOTYPE)
-                    vcf_variables.DEL_AF.append(obj.AF)
-                elif obj.SVTYPE == "BND":
-                    vcf_variables.BND.append(obj.SVLEN)
-                    vcf_variables.BND_GENOTYPE.append(obj.GENOTYPE)
-                    vcf_variables.BND_AF.append(obj.AF)
+                    if obj.phased:
+                        vcf_variables.PHASED_DEL.append(abs(obj.SVLEN))
+                        vcf_variables.PHASED_DEL_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.PHASED_DEL_AF.append(obj.AF)
+                    else:
+                        vcf_variables.DEL.append(abs(obj.SVLEN))
+                        vcf_variables.DEL_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.DEL_AF.append(obj.AF)
+                if obj.SVTYPE == "INS":
+                    if obj.phased:
+                        vcf_variables.PHASED_INS.append(abs(obj.SVLEN))
+                        vcf_variables.PHASED_INS_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.PHASED_INS_AF.append(obj.AF)
+                    else:
+                        vcf_variables.INS.append(abs(obj.SVLEN))
+                        vcf_variables.INS_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.INS_AF.append(obj.AF)
+                if obj.SVTYPE == "INV":
+                    if obj.phased:
+                        vcf_variables.PHASED_INV.append(abs(obj.SVLEN))
+                        vcf_variables.PHASED_INV_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.PHASED_INV_AF.append(obj.AF)
+                    else:
+                        vcf_variables.INV.append(abs(obj.SVLEN))
+                        vcf_variables.INV_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.INV_AF.append(obj.AF)
+                if obj.SVTYPE == "DUP":
+                    if obj.phased:
+                        vcf_variables.PHASED_DUP.append(abs(obj.SVLEN))
+                        vcf_variables.PHASED_DUP_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.PHASED_DUP_AF.append(obj.AF)
+                    else:
+                        vcf_variables.DUP.append(abs(obj.SVLEN))
+                        vcf_variables.DUP_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.DUP_AF.append(obj.AF)
+                if obj.SVTYPE == "BND":
+                    if obj.phased:
+                        vcf_variables.PHASED_BND.append(abs(obj.SVLEN))
+                        vcf_variables.PHASED_BND_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.PHASED_BND_AF.append(obj.AF)
+                    else:
+                        vcf_variables.BND.append(abs(obj.SVLEN))
+                        vcf_variables.BND_GENOTYPE.append(obj.GENOTYPE)
+                        vcf_variables.BND_AF.append(obj.AF)
+
     return vcf_variables

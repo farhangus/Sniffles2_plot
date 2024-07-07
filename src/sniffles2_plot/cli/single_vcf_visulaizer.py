@@ -26,7 +26,7 @@ sv_ranges = {
     "BND": None,
 }
 labels = ["0/0", "0/1", "1/1"]
-
+phased_labels=["0|0","0|1","1|1"]
 
 def single_visulaizer(input_vcf_file, output_path):
     """generate the plots for single vcf files"""
@@ -37,6 +37,8 @@ def single_visulaizer(input_vcf_file, output_path):
     length_variant_file = os.path.join(output_path, "length_variant.jpg")
     genome_chart_del_ins = os.path.join(output_path, "del_ins_genotype.jpg")
     genotype_chart_inv_dup = os.path.join(output_path, "inv_dup_genotype.jpg")
+    genome_chart_phased_del_ins = os.path.join(output_path, "phased_del_ins_genotype.jpg")
+    genotype_chart_phased_inv_dup = os.path.join(output_path, "phased_inv_dup_genotype.jpg")
     out_chart_2 = os.path.join(output_path, "dup_inv_type_size.jpg")
     vcf_variables = vcf_number_variants(input_vcf_file)
 
@@ -57,6 +59,7 @@ def single_visulaizer(input_vcf_file, output_path):
         GenomeChartData(vcf_variables.DUP_GENOTYPE, "DUP"),
     )
 
+
     Genome_chart_data_generator = GenomeChartDataGenerator(input_vcf_file, output_path)
     sv_size_type_chart(
         sv_ranges["DEL"], sv_ranges["INS"], "DEL", "INS", del_ins_type_size_chart
@@ -69,7 +72,20 @@ def single_visulaizer(input_vcf_file, output_path):
         GenomeChartData(vcf_variables.DEL_GENOTYPE, "DEl"),
         GenomeChartData(vcf_variables.INS_GENOTYPE, "INS"),
     )
-
+    if vcf_variables.HAS_PHASED:
+        genome_bar_chart(
+            genome_chart_phased_del_ins,
+            phased_labels,
+            GenomeChartData(vcf_variables.PHASED_DEL_GENOTYPE, "PHASED_DEl"),
+            GenomeChartData(vcf_variables.PHASED_INS_GENOTYPE, "PHASED_INS"),
+        )
+        genome_bar_chart(
+            genotype_chart_phased_inv_dup,
+            phased_labels,
+            GenomeChartData(vcf_variables.PHASED_INV_GENOTYPE, "PHASED_INV"),
+            GenomeChartData(vcf_variables.PHASED_DUP_GENOTYPE, "PHASED_DUP"),
+        )
+        
     length_var_count_chart(
         length_variant_file,
         1,

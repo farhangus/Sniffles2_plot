@@ -29,7 +29,6 @@ class VCFHeader(object):
 
 
 class VCFLineSV(object):
-    # init
     def __init__(self, input_line):
         # save the original
         self.sv_line = input_line
@@ -75,6 +74,7 @@ class VCFLineSV(object):
             self.DV = 0
             # parse data
             self.get_genotype(tab_sep_fields[VCF_MANDATORY_FIELDS], FORMAT)
+            self.phased = self._check_phased(self.GENOTYPE)
             self.get_parsed_info(INFO.strip("'\""))
             # for Translocation (BND/TRA)
             self.AF = (
@@ -85,7 +85,10 @@ class VCFLineSV(object):
             self.TRA = "" if self.SVTYPE != "BND" else ALT
             self.END = self.END if self.SVTYPE != "BND" else self.POS + 1
             self.SVLEN = int(self.SVLEN) if self.SVTYPE != "BND" else self.SVLEN
-
+    
+    def _check_phased(self,genotype:str)->bool:
+        return genotype[1]=='|'
+    
     def get_parsed_info(self, info_string):
         # INFO field extraction
         extract_info = [
