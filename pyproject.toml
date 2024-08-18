@@ -14,6 +14,7 @@ dependencies = [
     "upsetplot>=0.8.0,<1",
     "pandas>=1.1.3,<2",
     "matplotlib>=3.3.2,<4",
+    "numpy<2",
 ]
 
 [project.scripts]
