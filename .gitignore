@@ -333,3 +333,5 @@ generated/
 .DS_STORE
 fixtures/
 
+sample
+test_charts

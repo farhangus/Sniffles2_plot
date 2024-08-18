@@ -69,7 +69,9 @@ def genome_bar_chart(output_file_path, labels, *bars: GenomeChartData):
     # Add a legend
     plt.legend()
     plt.savefig(output_file_path, dpi=800)
-
+    plt.close()
+    plt.cla()
+    plt.clf()
 
 def sv_size_type_chart(l1, l2, label_1, label_2, path_2_chart):
     """generate the SV size charts for each two variants(del,ins) and (inv,dup)"""
